@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
     <style>
         /* Base Styles */
         body {
@@ -238,6 +239,18 @@
             background-color: #3498db;
             padding-right: 25px;
         }
+
+        /* لتعطيل الأزرار في السايد بار */
+        .sidebar ul li button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #3f5166 !important; /* لون ثابت حتى لا يتغير بالـ hover */
+            padding-right: 15px !important; /* منع تغيير الـ padding */
+        }
+        .sidebar ul li button.disabled:hover {
+            transform: none; /* منع التأثير عند الـ hover */
+        }
+
 
         .sidebar .back-btn {
             background-color: #e67e22;
@@ -506,7 +519,7 @@
             <form id="addFarmIntroForm">
                 <div class="form-group">
                     <label for="introFarmName">اسم المزرعة:</label>
-                    <input type="text" id="introFarmName" required >
+                    <input type="text" id="introFarmName" required placeholder="مثال: مزرعة الأمل">
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn">أضف المزرعة</button>
@@ -540,6 +553,7 @@
                 <li><button id="vaccinationsBtn" class="sidebar-btn">التحصينات</button></li>
                 <li><button id="medicationsBtn" class="sidebar-btn">الأدوية</button></li>
                 <li><button id="cycleHistoryBtn" class="sidebar-btn">سجل الدورات</button></li>
+                <li><button id="activationBtn" class="sidebar-btn">تفعيل البرنامج</button></li>
             </ul>
             <button id="backToFarmsBtn" class="back-btn">العودة للمزارع</button>
             <button id="clearAllDataBtn" class="clear-data-btn">مسح كل البيانات</button>
@@ -565,7 +579,7 @@
                     </div>
                     <div class="form-group">
                         <label for="cycleSupplier">المورد:</label>
-                        <input type="text" id="cycleSupplier" required >
+                        <input type="text" id="cycleSupplier" required placeholder="مثال: شركة النور">
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn">حفظ الدورة</button>
@@ -602,7 +616,7 @@
                     </div>
                     <div class="form-group">
                         <label for="expenseDescription">الوصف:</label>
-                        <input type="text" id="expenseDescription" required >
+                        <input type="text" id="expenseDescription" required placeholder="مثال: شراء أعلاف">
                     </div>
                     <div class="form-group">
                         <label for="expenseAmount">المبلغ:</label>
@@ -721,7 +735,7 @@
                     </div>
                     <div class="form-group">
                         <label for="vaccinationName">اسم التحصين:</label>
-                        <input type="text" id="vaccinationName" required >
+                        <input type="text" id="vaccinationName" required placeholder="مثال: لقاح نيوكاسل">
                     </div>
                     <div class="form-group">
                         <label for="vaccinationAge">عمر الفراخ (يوم):</label>
@@ -729,7 +743,7 @@
                     </div>
                     <div class="form-group">
                         <label for="vaccinationQuantity">الكمية:</label>
-                        <input type="text" id="vaccinationQuantity" required >
+                        <input type="text" id="vaccinationQuantity" required placeholder="مثال: 500 مل، 1000 جرعة">
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn">إضافة التحصين</button>
@@ -766,7 +780,7 @@
                     </div>
                     <div class="form-group">
                         <label for="medicationName">اسم الدواء:</label>
-                        <input type="text" id="medicationName" required >
+                        <input type="text" id="medicationName" required placeholder="مثال: مضاد حيوي">
                     </div>
                     <div class="form-group">
                         <label for="medicationAge">عمر الفراخ (يوم):</label>
@@ -774,7 +788,7 @@
                     </div>
                     <div class="form-group">
                         <label for="medicationQuantity">الكمية:</label>
-                        <input type="text" id="medicationQuantity" required >
+                        <input type="text" id="medicationQuantity" required placeholder="مثال: 200 جرام، 10 كجم">
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn">إضافة الدواء</button>
@@ -890,6 +904,25 @@
                 <p id="noCycleSelectedPrompt" class="cycle-select-prompt">الرجاء اختيار دورة من القائمة لعرض تفاصيلها.</p>
             </div>
 
+            <div id="activationSection" class="content-section hidden">
+                <h4>تفعيل البرنامج</h4>
+                <div id="activationStatus">
+                    </div>
+                <div class="form-group">
+                    <label for="deviceFingerprintDisplay">بصمة جهازك (أرسلها للمطور):</label>
+                    <input type="text" id="deviceFingerprintDisplay" readonly style="direction: ltr; text-align: left;">
+                </div>
+                <form id="activationForm">
+                    <div class="form-group">
+                        <label for="licenseKeyInput">أدخل مفتاح التفعيل:</label>
+                        <input type="text" id="licenseKeyInput" required style="direction: ltr; text-align: left;">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">تفعيل</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 
@@ -923,6 +956,7 @@
             const vaccinationsSection = document.getElementById('vaccinationsSection');
             const medicationsSection = document.getElementById('medicationsSection');
             const cycleHistorySection = document.getElementById('cycleHistorySection');
+            const activationSection = document.getElementById('activationSection'); // قسم التفعيل الجديد
 
             // فورمة إضافة دورة
             const addCycleForm = document.getElementById('addCycleForm');
@@ -961,16 +995,16 @@
             const vaccinationDateInput = document.getElementById('vaccinationDate');
             const vaccinationNameInput = document.getElementById('vaccinationName');
             const vaccinationAgeInput = document.getElementById('vaccinationAge');
-            const vaccinationQuantityInput = document.getElementById('vaccinationQuantity'); // جديد
+            const vaccinationQuantityInput = document.getElementById('vaccinationQuantity'); 
             const vaccinationsTableBody = document.querySelector('#vaccinationsTable tbody');
 
-            // عناصر قسم الأدوية (الجديد)
+            // عناصر قسم الأدوية
             const addMedicationForm = document.getElementById('addMedicationForm');
             const medicationCycleIdSelect = document.getElementById('medicationCycleId');
             const medicationDateInput = document.getElementById('medicationDate');
             const medicationNameInput = document.getElementById('medicationName');
             const medicationAgeInput = document.getElementById('medicationAge');
-            const medicationQuantityInput = document.getElementById('medicationQuantity'); // جديد
+            const medicationQuantityInput = document.getElementById('medicationQuantity'); 
             const medicationsTableBody = document.querySelector('#medicationsTable tbody');
 
 
@@ -994,10 +1028,25 @@
             const cycleDetailsVaccinationsTableBody = document.querySelector('#cycleDetailsVaccinationsTable tbody');
             const cycleDetailsMedicationsTableBody = document.querySelector('#cycleDetailsMedicationsTable tbody'); 
 
+            // عناصر قسم التفعيل الجديد
+            const activationStatusDiv = document.getElementById('activationStatus');
+            const deviceFingerprintDisplay = document.getElementById('deviceFingerprintDisplay');
+            const activationForm = document.getElementById('activationForm');
+            const licenseKeyInput = document.getElementById('licenseKeyInput');
+
 
             // --- المتغيرات الداخلية لإدارة الحالة ---
             let farms = [];
             let currentFarmId = null;
+
+            // --- متغيرات التفعيل ---
+            const SECRET_KEY = "wardd"; // هذا هو المفتاح السري الخاص بك. لا تشاركه مع العميل!
+            const TRIAL_DAYS = 3;
+
+            let isActivated = false;
+            let trialRemainingDays = TRIAL_DAYS;
+            let currentDeviceFingerprint = '';
+
 
             // --- الدوال الأساسية لإدارة البيانات (Local Storage) ---
 
@@ -1010,7 +1059,7 @@
                         if (!farm.medications) {
                             farm.medications = [];
                         }
-                        if (!farm.vaccinations) { // قد نحتاج لتهيئة التحصينات أيضاً
+                        if (!farm.vaccinations) { 
                             farm.vaccinations = [];
                         }
                     });
@@ -1020,6 +1069,126 @@
 
             const saveFarms = () => {
                 localStorage.setItem('poultryFarms', JSON.stringify(farms));
+            };
+
+            // --- دوال إدارة التفعيل ---
+
+            // دالة لتوليد "بصمة الجهاز" (هذه ليست آمنة 100% ولكنها كافية لردع الاستخدام العشوائي)
+            const generateDeviceFingerprint = () => {
+                const parts = [
+                    navigator.userAgent,
+                    navigator.language,
+                    navigator.platform,
+                    screen.width,
+                    screen.height,
+                    screen.colorDepth,
+                    new Date().getTimezoneOffset()
+                ];
+                return sha256(parts.join('|')); // استخدام sha256 لدمجها في بصمة واحدة
+            };
+
+            const checkActivationStatus = () => {
+                const activationInfo = JSON.parse(localStorage.getItem('poultryAppActivation')) || {};
+                const now = new Date();
+
+                currentDeviceFingerprint = generateDeviceFingerprint();
+                deviceFingerprintDisplay.value = currentDeviceFingerprint; // عرض البصمة للعميل
+
+                if (activationInfo.isActivated && activationInfo.deviceFingerprint === currentDeviceFingerprint) {
+                    isActivated = true;
+                    updateActivationUI();
+                    return; // تم التفعيل والجهاز متطابق
+                }
+
+                // إذا لم يكن مفعلًا، نبدأ أو نتحقق من الفترة التجريبية
+                let trialStartDate = activationInfo.trialStartDate;
+                if (!trialStartDate) {
+                    trialStartDate = now.toISOString().split('T')[0]; // تاريخ اليوم
+                    activationInfo.trialStartDate = trialStartDate;
+                    localStorage.setItem('poultryAppActivation', JSON.stringify(activationInfo));
+                }
+
+                const start = new Date(trialStartDate);
+                const diffTime = Math.abs(now - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                trialRemainingDays = TRIAL_DAYS - diffDays;
+
+                if (trialRemainingDays <= 0) {
+                    isActivated = false; // انتهت الفترة التجريبية ولم يتم التفعيل
+                } else {
+                    isActivated = false; // ما زالت الفترة التجريبية ولكن لم يتم التفعيل بعد
+                }
+
+                updateActivationUI();
+            };
+
+            const updateActivationUI = () => {
+                if (isActivated) {
+                    activationStatusDiv.innerHTML = '<p style="color: green; font-weight: bold;">البرنامج مفعل بالكامل. شكرا لثقتكم!</p>';
+                    licenseKeyInput.disabled = true;
+                    activationForm.querySelector('button[type="submit"]').disabled = true;
+                    // تمكين كل أزرار السايد بار
+                    sidebarButtons.forEach(btn => btn.classList.remove('disabled'));
+                    initialScreen.classList.remove('hidden'); // عرض الشاشة الأولية
+                    managementScreen.classList.add('hidden'); // إخفاء شاشة الإدارة في البداية حتى لا تظهر مقفلة
+                } else {
+                    let statusMessage = '';
+                    if (trialRemainingDays > 0) {
+                        statusMessage = `<p style="color: orange; font-weight: bold;">البرنامج يعمل بنسخة تجريبية. متبقي: ${trialRemainingDays} أيام. <br>الرجاء تفعيل البرنامج للاستمتاع بجميع الميزات.</p>`;
+                        // تمكين كل الأزرار خلال الفترة التجريبية
+                        sidebarButtons.forEach(btn => btn.classList.remove('disabled'));
+                        initialScreen.classList.remove('hidden'); // عرض الشاشة الأولية
+                        managementScreen.classList.add('hidden'); // إخفاء شاشة الإدارة في البداية
+                    } else {
+                        statusMessage = `<p style="color: red; font-weight: bold;">انتهت الفترة التجريبية. الرجاء تفعيل البرنامج للاستمرار في الاستخدام.</p>`;
+                        // تعطيل جميع أزرار السايد بار باستثناء زر التفعيل
+                        sidebarButtons.forEach(btn => {
+                            if (btn.id !== 'activationBtn') {
+                                btn.classList.add('disabled');
+                            } else {
+                                btn.classList.remove('disabled');
+                            }
+                        });
+                        // إذا كان في شاشة الإدارة والدورة انتهت، اجبره يروح صفحة التفعيل
+                        if (!managementScreen.classList.contains('hidden') && contentTitle.textContent !== 'تفعيل البرنامج') {
+                            switchContentSection('activationSection');
+                        }
+                         // منع الدخول لشاشة الإدارة من البداية
+                        if (!initialScreen.classList.contains('hidden')) {
+                             // لا تفعل شيئا، يبقى على الشاشة الأولية
+                        } else {
+                            // إذا كان داخل شاشة الإدارة، اجبره على التفعيل
+                            initialScreen.classList.add('hidden'); // تأكد من إخفاء شاشة المزارع
+                            managementScreen.classList.remove('hidden'); // إظهار شاشة الإدارة ليعرض قسم التفعيل
+                            switchContentSection('activationSection'); // انتقل مباشرة لقسم التفعيل
+                            alert('انتهت الفترة التجريبية للبرنامج. يرجى تفعيل البرنامج للاستمرار.');
+                        }
+                    }
+                    activationStatusDiv.innerHTML = statusMessage;
+                    licenseKeyInput.disabled = false;
+                    activationForm.querySelector('button[type="submit"]').disabled = false;
+                }
+            };
+
+            const activateProgram = (enteredKey) => {
+                const expectedKey = sha256(currentDeviceFingerprint + SECRET_KEY);
+
+                if (enteredKey === expectedKey) {
+                    const activationInfo = {
+                        isActivated: true,
+                        activationDate: new Date().toISOString().split('T')[0],
+                        deviceFingerprint: currentDeviceFingerprint // ربط المفتاح بالبصمة
+                    };
+                    localStorage.setItem('poultryAppActivation', JSON.stringify(activationInfo));
+                    isActivated = true;
+                    updateActivationUI();
+                    alert('تم تفعيل البرنامج بنجاح!');
+                    // بعد التفعيل، يمكن نقله إلى إدارة الدورات أو أي قسم آخر
+                    switchContentSection('addCycleSection'); 
+                } else {
+                    alert('مفتاح تفعيل غير صحيح. الرجاء التحقق والمحاولة مرة أخرى.');
+                }
             };
 
             // --- دوال الواجهة (Rendering) ---
@@ -1149,7 +1318,8 @@
                             <td>${vaccination.date}</td>
                             <td>${vaccination.name}</td>
                             <td>${vaccination.age}</td>
-                            <td>${vaccination.quantity}</td> <td><button class="btn btn-danger btn-sm" data-type="vaccination" data-id="${vaccination.id}">حذف</button></td>
+                            <td>${vaccination.quantity}</td> 
+                            <td><button class="btn btn-danger btn-sm" data-type="vaccination" data-id="${vaccination.id}">حذف</button></td>
                         `;
                     });
                 } else {
@@ -1166,7 +1336,8 @@
                             <td>${medication.date}</td>
                             <td>${medication.name}</td>
                             <td>${medication.age}</td>
-                            <td>${medication.quantity}</td> <td><button class="btn btn-danger btn-sm" data-type="medication" data-id="${medication.id}">حذف</button></td>
+                            <td>${medication.quantity}</td> 
+                            <td><button class="btn btn-danger btn-sm" data-type="medication" data-id="${medication.id}">حذف</button></td>
                         `;
                     });
                 } else {
@@ -1183,6 +1354,7 @@
                 vaccinationsSection.classList.add('hidden');
                 medicationsSection.classList.add('hidden'); 
                 cycleHistorySection.classList.add('hidden');
+                activationSection.classList.add('hidden'); // إخفاء قسم التفعيل
 
                 // إظهار القسم المطلوب
                 document.getElementById(sectionId).classList.remove('hidden');
@@ -1195,6 +1367,8 @@
                 else if (sectionId === 'vaccinationsSection') contentTitle.textContent = 'التحصينات';
                 else if (sectionId === 'medicationsSection') contentTitle.textContent = 'الأدوية';
                 else if (sectionId === 'cycleHistorySection') contentTitle.textContent = 'سجل الدورات';
+                else if (sectionId === 'activationSection') contentTitle.textContent = 'تفعيل البرنامج';
+
 
                 // تحديث زر السايد بار النشط
                 document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
@@ -1338,13 +1512,14 @@
                             <td>${vac.date}</td>
                             <td>${vac.name}</td>
                             <td>${vac.age}</td>
-                            <td>${vac.quantity}</td> `;
+                            <td>${vac.quantity}</td> 
+                        `;
                     });
                 } else {
                     cycleDetailsVaccinationsTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#777;">لا توجد تحصينات مسجلة لهذه الدورة.</td></tr>`;
                 }
 
-                cycleDetailsMedicationsTableBody.innerHTML = ''; // تغيير الاسم هنا
+                cycleDetailsMedicationsTableBody.innerHTML = ''; 
                 if (cycleMedications.length > 0) {
                     cycleMedications.forEach(med => {
                         const row = cycleDetailsMedicationsTableBody.insertRow();
@@ -1352,7 +1527,8 @@
                             <td>${med.date}</td>
                             <td>${med.name}</td>
                             <td>${med.age}</td>
-                            <td>${med.quantity}</td> `;
+                            <td>${med.quantity}</td> 
+                        `;
                     });
                 } else {
                     cycleDetailsMedicationsTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#777;">لا توجد أدوية مسجلة لهذه الدورة.</td></tr>`;
@@ -1365,6 +1541,11 @@
             // 1. زر "أضف المزرعة" في الشاشة الأولية
             addFarmIntroForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                // منع إضافة مزارع جديدة إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                if (!isActivated && trialRemainingDays <= 0) {
+                    alert('الرجاء تفعيل البرنامج لإضافة مزارع جديدة.');
+                    return;
+                }
                 const name = introFarmNameInput.value.trim();
                 if (name) {
                     const newFarm = {
@@ -1390,6 +1571,16 @@
             farmsListDiv.addEventListener('click', (e) => {
                 const farmCard = e.target.closest('.farm-card');
                 if (farmCard) {
+                    // منع الدخول لإدارة المزرعة إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                    if (!isActivated && trialRemainingDays <= 0) {
+                        alert('الرجاء تفعيل البرنامج للوصول إلى إدارة المزرعة.');
+                        // يمكن نقله مباشرة إلى صفحة التفعيل هنا
+                        initialScreen.classList.add('hidden');
+                        managementScreen.classList.remove('hidden');
+                        switchContentSection('activationSection');
+                        return;
+                    }
+
                     currentFarmId = parseInt(farmCard.dataset.id);
                     initialScreen.classList.add('hidden');
                     managementScreen.classList.remove('hidden');
@@ -1406,6 +1597,7 @@
                 currentFarmId = null;
                 saveFarms(); // حفظ أي تغييرات قبل العودة
                 renderFarmsList();
+                checkActivationStatus(); // إعادة فحص حالة التفعيل عند العودة للشاشة الأولية
             });
 
             // 4. زر "العودة للمزارع" (في الهيدر - للموبايل)
@@ -1415,18 +1607,21 @@
                 currentFarmId = null;
                 saveFarms(); // حفظ أي تغييرات قبل العودة
                 renderFarmsList();
+                checkActivationStatus(); // إعادة فحص حالة التفعيل عند العودة للشاشة الأولية
             });
 
             // 5. زر "مسح كل البيانات"
             const handleClearAllData = () => {
                 if (confirm('هل أنت متأكد من مسح جميع بيانات المزارع والدورات والمصروفات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
                     localStorage.removeItem('poultryFarms');
+                    // لا تمسح بيانات التفعيل، فقط بيانات المزارع
                     farms = [];
                     currentFarmId = null;
                     renderFarmsList();
                     managementScreen.classList.add('hidden');
                     initialScreen.classList.remove('hidden');
                     alert('تم مسح جميع البيانات بنجاح.');
+                    checkActivationStatus(); // إعادة فحص حالة التفعيل
                 }
             };
             clearAllDataBtn.addEventListener('click', handleClearAllData);
@@ -1448,6 +1643,12 @@
             // 8. أزرار السايد بار الرئيسية (إدارة الدورات، المصروفات، إلخ.)
             sidebarButtons.forEach(button => {
                 button.addEventListener('click', () => {
+                    // منع النقر على الأزرار المعطلة
+                    if (button.classList.contains('disabled')) {
+                        alert('الرجاء تفعيل البرنامج للوصول إلى هذه الميزة.');
+                        return;
+                    }
+
                     if (button.id === 'addCycleBtn') switchContentSection('addCycleSection');
                     else if (button.id === 'expensesBtn') switchContentSection('expensesSection');
                     else if (button.id === 'mortalityBtn') switchContentSection('mortalitySection');
@@ -1455,12 +1656,18 @@
                     else if (button.id === 'vaccinationsBtn') switchContentSection('vaccinationsSection');
                     else if (button.id === 'medicationsBtn') switchContentSection('medicationsSection');
                     else if (button.id === 'cycleHistoryBtn') switchContentSection('cycleHistorySection');
+                    else if (button.id === 'activationBtn') switchContentSection('activationSection'); // زر التفعيل الجديد
                 });
             });
 
             // 9. فورمة إضافة دورة جديدة
             addCycleForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                // منع الإضافة إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                if (!isActivated && trialRemainingDays <= 0) {
+                    alert('الرجاء تفعيل البرنامج لإضافة دورات.');
+                    return;
+                }
                 const farm = farms.find(f => f.id === currentFarmId);
                 if (!farm) return;
 
@@ -1485,6 +1692,11 @@
             // 10. فورمة إضافة مصروف جديد
             addExpenseForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                // منع الإضافة إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                if (!isActivated && trialRemainingDays <= 0) {
+                    alert('الرجاء تفعيل البرنامج لإضافة مصروفات.');
+                    return;
+                }
                 const farm = farms.find(f => f.id === currentFarmId);
                 if (!farm) return;
 
@@ -1509,6 +1721,11 @@
             // 11. فورمة تسجيل النافق
             addMortalityForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                // منع الإضافة إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                if (!isActivated && trialRemainingDays <= 0) {
+                    alert('الرجاء تفعيل البرنامج لتسجيل النافق.');
+                    return;
+                }
                 const farm = farms.find(f => f.id === currentFarmId);
                 if (!farm) return;
 
@@ -1532,6 +1749,11 @@
             // 12. فورمة تسجيل البيع
             addSaleForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                // منع الإضافة إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                if (!isActivated && trialRemainingDays <= 0) {
+                    alert('الرجاء تفعيل البرنامج لتسجيل عمليات البيع.');
+                    return;
+                }
                 const farm = farms.find(f => f.id === currentFarmId);
                 if (!farm) return;
 
@@ -1556,6 +1778,11 @@
             // 13. فورمة إضافة تحصين
             addVaccinationForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                // منع الإضافة إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                if (!isActivated && trialRemainingDays <= 0) {
+                    alert('الرجاء تفعيل البرنامج لإضافة تحصينات.');
+                    return;
+                }
                 const farm = farms.find(f => f.id === currentFarmId);
                 if (!farm) return;
 
@@ -1565,7 +1792,7 @@
                     date: vaccinationDateInput.value,
                     name: vaccinationNameInput.value.trim(),
                     age: parseInt(vaccinationAgeInput.value),
-                    quantity: vaccinationQuantityInput.value.trim() // جلب قيمة الكمية
+                    quantity: vaccinationQuantityInput.value.trim() 
                 };
 
                 if (newVaccination.cycleId && newVaccination.date && newVaccination.name && !isNaN(newVaccination.age) && newVaccination.age >= 0 && newVaccination.quantity) {
@@ -1578,9 +1805,14 @@
                 }
             });
 
-            // 14. فورمة إضافة دواء (الجديدة)
+            // 14. فورمة إضافة دواء
             addMedicationForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                // منع الإضافة إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                if (!isActivated && trialRemainingDays <= 0) {
+                    alert('الرجاء تفعيل البرنامج لإضافة أدوية.');
+                    return;
+                }
                 const farm = farms.find(f => f.id === currentFarmId);
                 if (!farm) return;
 
@@ -1590,11 +1822,10 @@
                     date: medicationDateInput.value,
                     name: medicationNameInput.value.trim(),
                     age: parseInt(medicationAgeInput.value),
-                    quantity: medicationQuantityInput.value.trim() // جلب قيمة الكمية
+                    quantity: medicationQuantityInput.value.trim() 
                 };
 
                 if (newMedication.cycleId && newMedication.date && newMedication.name && !isNaN(newMedication.age) && newMedication.age >= 0 && newMedication.quantity) {
-                    // التأكد من تهيئة خاصية medications في المزرعة
                     if (!farm.medications) { 
                         farm.medications = []; 
                     }
@@ -1609,6 +1840,12 @@
 
             // 15. تحديد دورة لعرض تفاصيلها في سجل الدورات
             selectCycleToView.addEventListener('change', (e) => {
+                // منع العرض إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                if (!isActivated && trialRemainingDays <= 0) {
+                    alert('الرجاء تفعيل البرنامج لعرض تفاصيل الدورات.');
+                    e.target.value = ''; // مسح الاختيار
+                    return;
+                }
                 const selectedCycleId = parseInt(e.target.value);
                 if (selectedCycleId) {
                     displayCycleDetails(selectedCycleId);
@@ -1622,22 +1859,25 @@
             document.addEventListener('click', (e) => {
                 // التأكد أن العنصر الذي تم النقر عليه هو زر الحذف
                 if (e.target.classList.contains('btn-danger') && e.target.classList.contains('btn-sm')) {
-                    const type = e.target.dataset.type; // نوع العنصر (cycle, expense, etc.)
-                    const itemId = parseInt(e.target.dataset.id); // ID العنصر المراد حذفه
+                    // منع الحذف إذا كانت النسخة غير مفعلة والفترة التجريبية انتهت
+                    if (!isActivated && trialRemainingDays <= 0) {
+                        alert('الرجاء تفعيل البرنامج لتنفيذ عمليات الحذف.');
+                        return;
+                    }
+
+                    const type = e.target.dataset.type; 
+                    const itemId = parseInt(e.target.dataset.id); 
                     const farm = farms.find(f => f.id === currentFarmId);
 
-                    if (!farm) return; // لا يوجد مزرعة حالية مختارة
+                    if (!farm) return; 
 
-                    // تأكيد الحذف
                     if (!confirm('هل أنت متأكد من حذف هذا العنصر؟')) return;
 
-                    // منطق الحذف بناءً على النوع
                     if (type === 'cycle') {
                         if (!confirm('تحذير: حذف هذه الدورة سيؤدي إلى حذف كل المصروفات والنافق والمبيعات والتحصينات والأدوية المرتبطة بها. هل أنت متأكد؟')) {
                             return;
                         }
                         farm.cycles = farm.cycles.filter(item => item.id !== itemId);
-                        // حذف البيانات المرتبطة بالدورة المحذوفة
                         farm.expenses = farm.expenses.filter(exp => exp.cycleId !== itemId);
                         farm.mortality = farm.mortality.filter(mort => mort.cycleId !== itemId);
                         farm.sales = farm.sales.filter(sale => sale.cycleId !== itemId);
@@ -1655,13 +1895,11 @@
                     } else if (type === 'medication') { 
                         farm.medications = farm.medications.filter(item => item.id !== itemId);
                     }
-                    saveFarms(); // حفظ التغييرات
-                    renderCurrentFarmData(); // إعادة عرض بيانات المزرعة
-                    // تحديث عرض تفاصيل الدورة إذا كنت تعرضها حاليًا
+                    saveFarms(); 
+                    renderCurrentFarmData(); 
                     if (!cycleHistorySection.classList.contains('hidden') && selectCycleToView.value) {
                          displayCycleDetails(parseInt(selectCycleToView.value));
-                    } else if (!cycleHistorySection.classList.contains('hidden')) { // لو كنت في صفحة السجل لكن لا توجد دورة مختارة
-                         // هذا الجزء يضمن تحديث قائمة الدورات المتاحة للاختيار
+                    } else if (!cycleHistorySection.classList.contains('hidden')) { 
                          const farm = farms.find(f => f.id === currentFarmId);
                          if (farm && farm.cycles.length > 0) {
                              selectCycleToView.innerHTML = '<option value="">-- اختر دورة --</option>';
@@ -1673,7 +1911,7 @@
                              });
                              noCycleSelectedPrompt.classList.remove('hidden');
                              cycleDetailsDisplay.classList.add('hidden');
-                             selectCycleToView.value = ""; // تأكد من عدم اختيار أي شيء بعد الحذف
+                             selectCycleToView.value = ""; 
                          } else {
                              selectCycleToView.innerHTML = '<option value="">لا توجد دورات متاحة</option>';
                              noCycleSelectedPrompt.textContent = 'لا توجد دورات مسجلة لهذه المزرعة.';
@@ -1684,8 +1922,32 @@
                 }
             });
 
+            // 17. فورمة التفعيل
+            activationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const enteredKey = licenseKeyInput.value.trim();
+                if (enteredKey) {
+                    activateProgram(enteredKey);
+                } else {
+                    alert('الرجاء إدخال مفتاح التفعيل.');
+                }
+            });
+
+
             // --- بدء التطبيق ---
-            loadFarms();
+            checkActivationStatus(); // فحص حالة التفعيل أولاً
+            loadFarms(); // ثم تحميل المزارع
+
+            // عند إعادة تحميل الصفحة والتفعيل غير ساري، اجبره على شاشة التفعيل
+            if (!isActivated && trialRemainingDays <= 0) {
+                initialScreen.classList.add('hidden');
+                managementScreen.classList.remove('hidden');
+                switchContentSection('activationSection');
+            } else {
+                 // إذا كانت مفعلة أو في الفترة التجريبية، أظهر الشاشة الأولية
+                initialScreen.classList.remove('hidden');
+                managementScreen.classList.add('hidden');
+            }
         });
     </script>
 </body>
