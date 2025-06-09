@@ -180,9 +180,10 @@
             max-width: 1200px;
             margin: 20px auto;
             background-color: #ffffff;
+            padding-right: 0; /* Adjust padding if needed to ensure sidebar isn't visible */
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
+            overflow: hidden; /* Crucial for hiding overflowing content */
             position: relative;
         }
 
@@ -196,6 +197,7 @@
             flex-direction: column;
             border-radius: 12px 0 0 12px;
             flex-shrink: 0;
+            transition: transform 0.3s ease-in-out; /* Use transform for smooth animation */
         }
 
         .sidebar h2 {
@@ -256,7 +258,6 @@
             box-shadow: 0 6px 15px rgba(230, 126, 34, 0.3);
         }
 
-        /* زر مسح البيانات في الوضع العادي - داخل السايد بار */
         .sidebar .clear-data-btn {
             background-color: #f44336;
             color: white;
@@ -397,9 +398,8 @@
 
         /* --- Responsive Design Additions --- */
 
-        /* زرار فتح القائمة (المنيوم) والعودة للمزارع في الموبايل */
         .mobile-header-buttons {
-            display: none; /* مخفي افتراضياً */
+            display: none;
             position: absolute;
             top: 15px;
             left: 15px;
@@ -443,46 +443,49 @@
                 border-radius: 0;
                 box-shadow: none;
                 position: relative;
+                overflow: hidden; /* Ensures anything extending beyond the layout is clipped */
+                /* No right/left margins needed here */
             }
 
             .sidebar {
                 position: fixed;
                 top: 0;
-                right: -250px; /* مخفي تماماً خارج الشاشة */
+                left: 0; /* Set initial position to left 0 */
                 width: 250px;
                 height: 100%;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-                transition: right 0.3s ease-in-out;
+                box-shadow: none;
+                transition: transform 0.3s ease-in-out;
                 z-index: 1000;
-                border-radius: 0;
-                padding-top: 80px; /* مسافة من فوق لزرار المنيو */
+                border-radius: 0; /* Remove border-radius to prevent any visible corners */
+                padding-top: 80px;
+                /* Move the sidebar completely off-screen to the left initially */
+                transform: translateX(-100%);
             }
 
             .sidebar.open {
-                right: 0; /* يظهر لما يكون مفتوح */
+                transform: translateX(0); /* Move back into view when open */
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3); /* Add box-shadow when open, to the right side */
             }
 
             .main-content {
                 padding: 20px;
-                margin-top: 70px; /* مسافة من فوق عشان أزرار الهيدر */
+                margin-top: 70px;
                 width: 100%;
             }
 
             .sidebar h2 {
-                display: none; /* إخفاء اسم المزرعة داخل السايد بار في الموبايل */
+                display: none;
             }
 
-            /* الأزرار دي هتفضل ظاهرة في السايد بار في الموبايل لما يظهر */
             .sidebar .back-btn,
             .sidebar .clear-data-btn {
-                display: block; /* تأكد أنها ظاهرة لما السايد بار مفتوح */
+                display: block;
             }
 
             .mobile-header-buttons {
-                display: flex; /* إظهار أزرار الهيدر في الموبايل */
+                display: flex;
             }
 
-            /* Overlay effect when sidebar is open */
             .management-layout.sidebar-open::after {
                 content: '';
                 position: fixed;
@@ -490,8 +493,8 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.6); /* طبقة سوداء شفافة */
-                z-index: 999; /* تحت السايد بار مباشرة */
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 999;
             }
         }
     </style>
