@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة مزارع الدواجن</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            direction: rtl;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            width: 100%;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #2980b9;
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: 600;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling - ENHANCED */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            text-align: right; /* Align labels to the right */
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group select { /* Added select */
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px; /* Softer corners */
+            box-sizing: border-box;
+            font-size: 1.05em;
+            color: #495057;
+            background-color: #fdfdfd;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #007bff; /* Blue focus color */
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Subtle shadow on focus */
+            background-color: #fff;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background-color: #2ecc71;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px; /* Consistent border-radius */
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2); /* Subtle shadow for buttons */
+        }
+
+        .btn:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* Darker gray for secondary */
+            box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-danger {
+            background-color: #dc3545; /* Brighter red for danger */
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Farm List Styling */
+        .farm-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .farm-card {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-left: 6px solid #3498db;
+            padding: 25px;
+            border-radius: 10px; /* Slightly more rounded */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .farm-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .farm-card h3 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        /* Main Management Layout */
+        .management-layout {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 40px);
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px 0 0 12px;
+        }
+
+        .sidebar h2 {
+            color: white;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.3em;
+            width: 100%;
+            padding: 12px 15px;
+            text-align: right;
+            cursor: pointer;
+            transition: background-color 0.3s ease, padding-right 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .sidebar ul li button:hover,
+        .sidebar ul li button.active {
+            background-color: #3498db;
+            padding-right: 25px;
+        }
+
+        .sidebar .back-btn {
+            background-color: #e67e22;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 30px;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.2);
+        }
+        .sidebar .back-btn:hover {
+            background-color: #d35400;
+            box-shadow: 0 6px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        /* New: Clear Data Button Style */
+        .sidebar .clear-data-btn {
+            background-color: #f44336; /* Red for destructive action */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 15px; /* Spacing from back button */
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(244, 67, 54, 0.2);
+        }
+        .sidebar .clear-data-btn:hover {
+            background-color: #d32f2f;
+            box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);
+        }
+
+
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .main-content h3 {
+            font-size: 2.2em;
+            color: #3498db;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .content-section {
+            background-color: #fcfcfc;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .content-section h4 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+            text-align: right;
+        }
+
+        .data-table th {
+            background-color: #e9ecef;
+            color: #555;
+            font-weight: 700;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f6f6f6;
+        }
+
+        .data-table tr:hover {
+            background-color: #e2e6ea;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            font-size: 1.3em;
+            color: #7f8c8d;
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px dashed #bdc3c7;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+            margin: 40px 0;
+        }
+
+        /* Cycle Details Specific Styles */
+        .cycle-details-summary {
+            background-color: #eaf6fd; /* Light blue background */
+            border: 1px solid #b3e0ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .cycle-details-summary p {
+            margin-bottom: 8px;
+        }
+        .cycle-details-summary p strong {
+            color: #2c3e50;
+        }
+        .cycle-details-summary .profit-loss {
+            font-weight: 700;
+            font-size: 1.3em;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #b3e0ff;
+        }
+        .profit-loss.profit {
+            color: #28a745; /* Green for profit */
+        }
+        .profit-loss.loss {
+            color: #dc3545; /* Red for loss */
+        }
+
+        .cycle-select-prompt {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            padding: 30px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            margin-top: 30px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div id="initialScreen" class="container">
+        <h1 id="mainTitle">نظام إدارة مزارع الدواجن</h1>
+
+        <div id="addFarmIntroSection" class="form-section">
+            <h2>أضف مزرعة جديدة</h2>
+            <form id="addFarmIntroForm">
+                <div class="form-group">
+                    <label for="introFarmName">اسم المزرعة:</label>
+                    <input type="text" id="introFarmName" required placeholder="مثال: مزرعة الأمل">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">أضف المزرعة</button>
+                </div>
+            </form>
+        </div>
+
+        <hr>
+
+        <div id="selectFarmSection">
+            <h2>اختر مزرعة للإدارة</h2>
+            <div id="farmsList" class="farm-list">
+                <p id="emptyState" class="empty-state hidden">لا توجد مزارع حالياً. ابدأ بإضافة مزرعة جديدة!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="managementScreen" class="management-layout hidden">
+        <div class="sidebar">
+            <h2 id="currentFarmNameSidebar"></h2>
+            <ul>
+                <li><button id="addCycleBtn" class="sidebar-btn active">إضافة دورة جديدة</button></li>
+                <li><button id="expensesBtn" class="sidebar-btn">المصروفات</button></li>
+                <li><button id="mortalityBtn" class="sidebar-btn">النافق</button></li>
+                <li><button id="salesBtn" class="sidebar-btn">البيع</button></li>
+                <li><button id="cycleHistoryBtn" class="sidebar-btn">سجل الدورات</button></li>
+            </ul>
+            <button id="backToFarmsBtn" class="back-btn">العودة للمزارع</button>
+            <button id="clearAllDataBtn" class="clear-data-btn">مسح كل البيانات</button> </div>
+
+        <div class="main-content">
+            <h3 id="contentTitle">إضافة دورة جديدة</h3>
+
+            <div id="addCycleSection" class="content-section">
+                <h4>إضافة دورة جديدة</h4>
+                <form id="addCycleForm">
+                    <div class="form-group">
+                        <label for="cycleStartDate">تاريخ بدء الدورة:</label>
+                        <input type="date" id="cycleStartDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cycleChicksCount">عدد الكتاكيت الداخلة:</label>
+                        <input type="number" id="cycleChicksCount" required min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="cycleChickPrice">سعر الكتكوت الواحد:</label>
+                        <input type="number" id="cycleChickPrice" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="cycleSupplier">المورد:</label>
+                        <input type="text" id="cycleSupplier" required placeholder="مثال: شركة النور">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">حفظ الدورة</button>
+                    </div>
+                </form>
+                <h4>الدورات الحالية</h4>
+                <table class="data-table" id="cyclesTable">
+                    <thead>
+                        <tr>
+                            <th>تاريخ البدء</th>
+                            <th>العدد</th>
+                            <th>سعر الكتكوت</th>
+                            <th>المورد</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div id="expensesSection" class="content-section hidden">
+                <h4>إضافة مصروف جديد</h4>
+                <form id="addExpenseForm">
+                    <div class="form-group">
+                        <label for="expenseCycleId">الدورة المرتبطة:</label>
+                        <select id="expenseCycleId" required>
+                            <option value="">اختر دورة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDate">التاريخ:</label>
+                        <input type="date" id="expenseDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDescription">الوصف:</label>
+                        <input type="text" id="expenseDescription" required placeholder="مثال: شراء أعلاف">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseAmount">المبلغ:</label>
+                        <input type="number" id="expenseAmount" required min="0" step="0.01">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">إضافة المصروف</button>
+                    </div>
+                </form>
+                <h4>قائمة المصروفات</h4>
+                <table class="data-table" id="expensesTable">
+                    <thead>
+                        <tr>
+                            <th>الدورة</th>
+                            <th>التاريخ</th>
+                            <th>الوصف</th>
+                            <th>المبلغ</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div id="mortalitySection" class="content-section hidden">
+                <h4>تسجيل النافق</h4>
+                <form id="addMortalityForm">
+                    <div class="form-group">
+                        <label for="mortalityCycleId">الدورة المرتبطة:</label>
+                        <select id="mortalityCycleId" required>
+                            <option value="">اختر دورة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mortalityDate">التاريخ:</label>
+                        <input type="date" id="mortalityDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mortalityCount">العدد النافق:</label>
+                        <input type="number" id="mortalityCount" required min="1">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">تسجيل النافق</button>
+                    </div>
+                </form>
+                <h4>سجل النافق</h4>
+                <table class="data-table" id="mortalityTable">
+                    <thead>
+                        <tr>
+                            <th>الدورة</th>
+                            <th>التاريخ</th>
+                            <th>العدد النافق</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div id="salesSection" class="content-section hidden">
+                <h4>تسجيل عملية بيع</h4>
+                <form id="addSaleForm">
+                    <div class="form-group">
+                        <label for="saleCycleId">الدورة المرتبطة:</label>
+                        <select id="saleCycleId" required>
+                            <option value="">اختر دورة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="saleDate">التاريخ:</label>
+                        <input type="date" id="saleDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="saleQuantity">الكمية (بالطن):</label>
+                        <input type="number" id="saleQuantity" required min="0.01" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="salePricePerTon">سعر الطن:</label>
+                        <input type="number" id="salePricePerTon" required min="0" step="0.01">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">تسجيل البيع</button>
+                    </div>
+                </form>
+                <h4>سجل عمليات البيع</h4>
+                <table class="data-table" id="salesTable">
+                    <thead>
+                        <tr>
+                            <th>الدورة</th>
+                            <th>التاريخ</th>
+                            <th>الكمية (طن)</th>
+                            <th>سعر الطن</th>
+                            <th>الإجمالي</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div id="cycleHistorySection" class="content-section hidden">
+                <h4>سجل الدورات</h4>
+                <div class="form-group">
+                    <label for="selectCycleToView">اختر دورة لعرض تفاصيلها:</label>
+                    <select id="selectCycleToView">
+                        <option value="">-- اختر دورة --</option>
+                        </select>
+                </div>
+
+                <div id="cycleDetailsDisplay" class="hidden">
+                    <hr>
+                    <h4>تفاصيل الدورة: <span id="displayedCycleName"></span></h4>
+                    <div class="cycle-details-summary">
+                        <p><strong>تاريخ بدء الدورة:</strong> <span id="detailStartDate"></span></p>
+                        <p><strong>تاريخ انتهاء الدورة (آخر بيع):</strong> <span id="detailEndDate"></span></p>
+                        <p><strong>عدد الكتاكيت الداخلة:</strong> <span id="detailChicksCount"></span></p>
+                        <p><strong>سعر الكتكوت الواحد:</strong> <span id="detailChickPrice"></span> جنيه</p>
+                        <p><strong>المورد:</strong> <span id="detailSupplier"></span></p>
+                        <p><strong>إجمالي النافق:</strong> <span id="detailTotalMortality"></span> دجاجة</p>
+                        <p><strong>إجمالي المصروفات:</strong> <span id="detailTotalExpenses"></span> جنيه</p>
+                        <p><strong>إجمالي إيرادات البيع:</strong> <span id="detailTotalSales"></span> جنيه</p>
+                        <p class="profit-loss" id="detailProfitLoss"></p>
+                    </div>
+
+                    <h5>المصروفات الخاصة بهذه الدورة:</h5>
+                    <table class="data-table" id="cycleDetailsExpensesTable">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>الوصف</th>
+                                <th>المبلغ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+
+                    <h5>النافق الخاص بهذه الدورة:</h5>
+                    <table class="data-table" id="cycleDetailsMortalityTable">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>العدد النافق</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+
+                    <h5>عمليات البيع الخاصة بهذه الدورة:</h5>
+                    <table class="data-table" id="cycleDetailsSalesTable">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>الكمية (طن)</th>
+                                <th>سعر الطن</th>
+                                <th>الإجمالي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+                <p id="noCycleSelectedPrompt" class="cycle-select-prompt">الرجاء اختيار دورة من القائمة لعرض تفاصيلها.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- العناصر الرئيسية في الـ DOM ---
+            const initialScreen = document.getElementById('initialScreen');
+            const managementScreen = document.getElementById('managementScreen');
+            const addFarmIntroForm = document.getElementById('addFarmIntroForm');
+            const introFarmNameInput = document.getElementById('introFarmName');
+            const farmsListDiv = document.getElementById('farmsList');
+            const emptyState = document.getElementById('emptyState');
+
+            const currentFarmNameSidebar = document.getElementById('currentFarmNameSidebar');
+            const backToFarmsBtn = document.getElementById('backToFarmsBtn');
+            const clearAllDataBtn = document.getElementById('clearAllDataBtn'); // الزر الجديد
+
+            const sidebarButtons = document.querySelectorAll('.sidebar-btn');
+            const contentTitle = document.getElementById('contentTitle');
+
+            // الأقسام الفرعية داخل شاشة الإدارة
+            const addCycleSection = document.getElementById('addCycleSection');
+            const expensesSection = document.getElementById('expensesSection');
+            const mortalitySection = document.getElementById('mortalitySection');
+            const salesSection = document.getElementById('salesSection');
+            const cycleHistorySection = document.getElementById('cycleHistorySection');
+
+            // فورمة إضافة دورة
+            const addCycleForm = document.getElementById('addCycleForm');
+            const cycleStartDateInput = document.getElementById('cycleStartDate');
+            const cycleChicksCountInput = document.getElementById('cycleChicksCount');
+            const cycleChickPriceInput = document.getElementById('cycleChickPrice');
+            const cycleSupplierInput = document.getElementById('cycleSupplier');
+            const cyclesTableBody = document.querySelector('#cyclesTable tbody');
+
+            // فورمة إضافة مصروف
+            const addExpenseForm = document.getElementById('addExpenseForm');
+            const expenseCycleIdSelect = document.getElementById('expenseCycleId');
+            const expenseDateInput = document.getElementById('expenseDate');
+            const expenseDescriptionInput = document.getElementById('expenseDescription');
+            const expenseAmountInput = document.getElementById('expenseAmount');
+            const expensesTableBody = document.querySelector('#expensesTable tbody');
+
+            // فورمة تسجيل النافق
+            const addMortalityForm = document.getElementById('addMortalityForm');
+            const mortalityCycleIdSelect = document.getElementById('mortalityCycleId');
+            const mortalityDateInput = document.getElementById('mortalityDate');
+            const mortalityCountInput = document.getElementById('mortalityCount');
+            const mortalityTableBody = document.querySelector('#mortalityTable tbody');
+
+            // فورمة تسجيل البيع
+            const addSaleForm = document.getElementById('addSaleForm');
+            const saleCycleIdSelect = document.getElementById('saleCycleId');
+            const saleDateInput = document.getElementById('saleDate');
+            const saleQuantityInput = document.getElementById('saleQuantity');
+            const salePricePerTonInput = document.getElementById('salePricePerTon');
+            const salesTableBody = document.querySelector('#salesTable tbody');
+
+            // عناصر قسم سجل الدورات
+            const selectCycleToView = document.getElementById('selectCycleToView');
+            const cycleDetailsDisplay = document.getElementById('cycleDetailsDisplay');
+            const noCycleSelectedPrompt = document.getElementById('noCycleSelectedPrompt');
+            const displayedCycleName = document.getElementById('displayedCycleName');
+            const detailStartDate = document.getElementById('detailStartDate');
+            const detailEndDate = document.getElementById('detailEndDate');
+            const detailChicksCount = document.getElementById('detailChicksCount');
+            const detailChickPrice = document.getElementById('detailChickPrice');
+            const detailSupplier = document.getElementById('detailSupplier');
+            const detailTotalMortality = document.getElementById('detailTotalMortality');
+            const detailTotalExpenses = document.getElementById('detailTotalExpenses');
+            const detailTotalSales = document.getElementById('detailTotalSales');
+            const detailProfitLoss = document.getElementById('detailProfitLoss');
+            const cycleDetailsExpensesTableBody = document.querySelector('#cycleDetailsExpensesTable tbody');
+            const cycleDetailsMortalityTableBody = document.querySelector('#cycleDetailsMortalityTable tbody');
+            const cycleDetailsSalesTableBody = document.querySelector('#cycleDetailsSalesTable tbody');
+
+
+            // --- المتغيرات الداخلية لإدارة الحالة ---
+            let farms = [];
+            let currentFarmId = null;
+
+            // --- الدوال الأساسية لإدارة البيانات (Local Storage) ---
+
+            const loadFarms = () => {
+                const storedFarms = localStorage.getItem('poultryFarms');
+                if (storedFarms) {
+                    farms = JSON.parse(storedFarms);
+                }
+                renderFarmsList();
+            };
+
+            const saveFarms = () => {
+                localStorage.setItem('poultryFarms', JSON.stringify(farms));
+            };
+
+            // --- دوال الواجهة (Rendering) ---
+
+            const renderFarmsList = () => {
+                farmsListDiv.innerHTML = '';
+                if (farms.length === 0) {
+                    emptyState.classList.remove('hidden');
+                } else {
+                    emptyState.classList.add('hidden');
+                    farms.forEach(farm => {
+                        const farmCard = document.createElement('div');
+                        farmCard.classList.add('farm-card');
+                        farmCard.dataset.id = farm.id;
+                        farmCard.innerHTML = `<h3>${farm.name}</h3>`;
+                        farmsListDiv.appendChild(farmCard);
+                    });
+                }
+            };
+
+            const renderCurrentFarmData = () => {
+                const farm = farms.find(f => f.id === currentFarmId);
+                if (!farm) return;
+
+                currentFarmNameSidebar.textContent = `مزرعة: ${farm.name}`;
+
+                // تحديث قائمة الدورات في الـ Selects (للمصروفات والنافق والبيع وسجل الدورات)
+                const populateCycleSelects = () => {
+                    const cycleSelects = [expenseCycleIdSelect, mortalityCycleIdSelect, saleCycleIdSelect, selectCycleToView];
+                    cycleSelects.forEach(selectElement => {
+                        // حفظ القيمة المختارة قبل تفريغ القائمة
+                        const selectedValue = selectElement.value;
+                        selectElement.innerHTML = '<option value="">اختر دورة</option>';
+                        farm.cycles.forEach(cycle => {
+                            const option = document.createElement('option');
+                            option.value = cycle.id;
+                            option.textContent = `دورة بتاريخ: ${cycle.startDate} (${cycle.supplier})`;
+                            selectElement.appendChild(option);
+                        });
+                        // استعادة القيمة المختارة بعد إعادة الملء
+                        selectElement.value = selectedValue;
+                    });
+                };
+                populateCycleSelects();
+
+
+                // عرض بيانات الدورات في جدول "إضافة دورة"
+                cyclesTableBody.innerHTML = '';
+                if (farm.cycles && farm.cycles.length > 0) {
+                    farm.cycles.forEach(cycle => {
+                        const row = cyclesTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${cycle.startDate}</td>
+                            <td>${cycle.chicksCount}</td>
+                            <td>${cycle.chickPrice.toFixed(2)}</td>
+                            <td>${cycle.supplier}</td>
+                            <td><button class="btn btn-danger btn-sm" data-type="cycle" data-id="${cycle.id}">حذف</button></td>
+                        `;
+                    });
+                } else {
+                    cyclesTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#777;">لا توجد دورات مسجلة بعد.</td></tr>`;
+                }
+
+                // عرض بيانات المصروفات
+                expensesTableBody.innerHTML = '';
+                if (farm.expenses && farm.expenses.length > 0) {
+                    farm.expenses.forEach(expense => {
+                        const cycleName = farm.cycles.find(c => c.id === expense.cycleId)?.startDate || 'دورة غير معروفة';
+                        const row = expensesTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${cycleName}</td>
+                            <td>${expense.date}</td>
+                            <td>${expense.description}</td>
+                            <td>${expense.amount.toFixed(2)}</td>
+                            <td><button class="btn btn-danger btn-sm" data-type="expense" data-id="${expense.id}">حذف</button></td>
+                        `;
+                    });
+                } else {
+                    expensesTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#777;">لا توجد مصروفات مسجلة بعد.</td></tr>`;
+                }
+
+                // عرض بيانات النافق
+                mortalityTableBody.innerHTML = '';
+                if (farm.mortality && farm.mortality.length > 0) {
+                    farm.mortality.forEach(item => {
+                        const cycleName = farm.cycles.find(c => c.id === item.cycleId)?.startDate || 'دورة غير معروفة';
+                        const row = mortalityTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${cycleName}</td>
+                            <td>${item.date}</td>
+                            <td>${item.count}</td>
+                            <td><button class="btn btn-danger btn-sm" data-type="mortality" data-id="${item.id}">حذف</button></td>
+                        `;
+                    });
+                } else {
+                    mortalityTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#777;">لا توجد حالات نافق مسجلة بعد.</td></tr>`;
+                }
+
+                // عرض بيانات البيع
+                salesTableBody.innerHTML = '';
+                if (farm.sales && farm.sales.length > 0) {
+                    farm.sales.forEach(sale => {
+                        const cycleName = farm.cycles.find(c => c.id === sale.cycleId)?.startDate || 'دورة غير معروفة';
+                        const total = sale.quantity * sale.pricePerTon;
+                        const row = salesTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${cycleName}</td>
+                            <td>${sale.date}</td>
+                            <td>${sale.quantity.toFixed(2)}</td>
+                            <td>${sale.pricePerTon.toFixed(2)}</td>
+                            <td>${total.toFixed(2)}</td>
+                            <td><button class="btn btn-danger btn-sm" data-type="sale" data-id="${sale.id}">حذف</button></td>
+                        `;
+                    });
+                } else {
+                    salesTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#777;">لا توجد مبيعات مسجلة بعد.</td></tr>`;
+                }
+            };
+
+            const switchContentSection = (sectionId) => {
+                // إخفاء كل الأقسام
+                addCycleSection.classList.add('hidden');
+                expensesSection.classList.add('hidden');
+                mortalitySection.classList.add('hidden');
+                salesSection.classList.add('hidden');
+                cycleHistorySection.classList.add('hidden');
+
+                // إظهار القسم المطلوب
+                document.getElementById(sectionId).classList.remove('hidden');
+
+                // تحديث عنوان المحتوى
+                if (sectionId === 'addCycleSection') contentTitle.textContent = 'إدارة الدورات';
+                else if (sectionId === 'expensesSection') contentTitle.textContent = 'المصروفات';
+                else if (sectionId === 'mortalitySection') contentTitle.textContent = 'النافق';
+                else if (sectionId === 'salesSection') contentTitle.textContent = 'البيع';
+                else if (sectionId === 'cycleHistorySection') contentTitle.textContent = 'سجل الدورات';
+
+                // تحديث زر السايد بار النشط
+                sidebarButtons.forEach(btn => btn.classList.remove('active'));
+                const activeBtn = document.getElementById(sectionId.replace('Section', 'Btn'));
+                if (activeBtn) activeBtn.classList.add('active');
+
+                // عند التحويل لسجل الدورات، قم بعرض الدورات المتاحة
+                if (sectionId === 'cycleHistorySection') {
+                    const farm = farms.find(f => f.id === currentFarmId);
+                    if (farm && farm.cycles.length > 0) {
+                        selectCycleToView.innerHTML = '<option value="">-- اختر دورة --</option>';
+                        farm.cycles.forEach(cycle => {
+                            const option = document.createElement('option');
+                            option.value = cycle.id;
+                            option.textContent = `دورة بتاريخ: ${cycle.startDate} (${cycle.supplier})`;
+                            selectCycleToView.appendChild(option);
+                        });
+                        noCycleSelectedPrompt.classList.remove('hidden');
+                        cycleDetailsDisplay.classList.add('hidden');
+                    } else {
+                        selectCycleToView.innerHTML = '<option value="">لا توجد دورات متاحة</option>';
+                        noCycleSelectedPrompt.textContent = 'لا توجد دورات مسجلة لهذه المزرعة.';
+                        noCycleSelectedPrompt.classList.remove('hidden');
+                        cycleDetailsDisplay.classList.add('hidden');
+                    }
+                }
+                 // عند التحويل لأي قسم فيه قوائم منسدلة (selects)
+                if (['expensesSection', 'mortalitySection', 'salesSection', 'cycleHistorySection'].includes(sectionId)) {
+                    renderCurrentFarmData(); // لإعادة تحديث قوائم الدورات
+                }
+            };
+
+            // عرض تفاصيل دورة معينة في سجل الدورات
+            const displayCycleDetails = (cycleId) => {
+                const farm = farms.find(f => f.id === currentFarmId);
+                const cycle = farm.cycles.find(c => c.id === cycleId);
+
+                if (!farm || !cycle) {
+                    cycleDetailsDisplay.classList.add('hidden');
+                    noCycleSelectedPrompt.classList.remove('hidden');
+                    return;
+                }
+
+                noCycleSelectedPrompt.classList.add('hidden');
+                cycleDetailsDisplay.classList.remove('hidden');
+
+                // تحديث الملخص
+                displayedCycleName.textContent = cycle.startDate;
+                detailStartDate.textContent = cycle.startDate;
+                detailChicksCount.textContent = cycle.chicksCount;
+                detailChickPrice.textContent = cycle.chickPrice.toFixed(2);
+                detailSupplier.textContent = cycle.supplier;
+
+                // حساب الإجماليات للدورة المختارة
+                let totalMortality = 0;
+                let totalExpenses = 0;
+                let totalSales = 0;
+                let lastSaleDate = 'لا يوجد';
+
+                // فلترة المصروفات والنافق والبيع للدورة الحالية
+                const cycleExpenses = farm.expenses.filter(exp => exp.cycleId === cycle.id);
+                const cycleMortality = farm.mortality.filter(mort => mort.cycleId === cycle.id);
+                const cycleSales = farm.sales.filter(sale => sale.cycleId === cycle.id);
+
+                cycleMortality.forEach(item => totalMortality += item.count);
+                cycleExpenses.forEach(exp => totalExpenses += exp.amount);
+                cycleSales.forEach(sale => {
+                    totalSales += (sale.quantity * sale.pricePerTon);
+                    // تحديث تاريخ آخر بيع
+                    if (lastSaleDate === 'لا يوجد' || new Date(sale.date) > new Date(lastSaleDate)) { // مقارنة التواريخ كـ Date objects
+                        lastSaleDate = sale.date;
+                    }
+                });
+
+                detailTotalMortality.textContent = totalMortality;
+                detailTotalExpenses.textContent = totalExpenses.toFixed(2);
+                detailTotalSales.textContent = totalSales.toFixed(2);
+                detailEndDate.textContent = lastSaleDate;
+
+                // حساب صافي الربح/الخسارة
+                const totalChickCost = cycle.chicksCount * cycle.chickPrice;
+                const netProfitLoss = totalSales - totalExpenses - totalChickCost;
+                detailProfitLoss.textContent = `صافي الربح/الخسارة: ${netProfitLoss.toFixed(2)} جنيه`;
+                detailProfitLoss.classList.remove('profit', 'loss');
+                if (netProfitLoss >= 0) {
+                    detailProfitLoss.classList.add('profit');
+                } else {
+                    detailProfitLoss.classList.add('loss');
+                }
+
+                // عرض المصروفات الخاصة بالدورة
+                cycleDetailsExpensesTableBody.innerHTML = '';
+                if (cycleExpenses.length > 0) {
+                    cycleExpenses.forEach(exp => {
+                        const row = cycleDetailsExpensesTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${exp.date}</td>
+                            <td>${exp.description}</td>
+                            <td>${exp.amount.toFixed(2)}</td>
+                        `;
+                    });
+                } else {
+                    cycleDetailsExpensesTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#777;">لا توجد مصروفات لهذه الدورة.</td></tr>`;
+                }
+
+                // عرض النافق الخاص بالدورة
+                cycleDetailsMortalityTableBody.innerHTML = '';
+                if (cycleMortality.length > 0) {
+                    cycleMortality.forEach(mort => {
+                        const row = cycleDetailsMortalityTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${mort.date}</td>
+                            <td>${mort.count}</td>
+                        `;
+                    });
+                } else {
+                    cycleDetailsMortalityTableBody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:#777;">لا يوجد نافق مسجل لهذه الدورة.</td></tr>`;
+                }
+
+                // عرض المبيعات الخاصة بالدورة
+                cycleDetailsSalesTableBody.innerHTML = '';
+                if (cycleSales.length > 0) {
+                    cycleSales.forEach(sale => {
+                        const row = cycleDetailsSalesTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${sale.date}</td>
+                            <td>${sale.quantity.toFixed(2)}</td>
+                            <td>${sale.pricePerTon.toFixed(2)}</td>
+                            <td>${(sale.quantity * sale.pricePerTon).toFixed(2)}</td>
+                        `;
+                    });
+                } else {
+                    cycleDetailsSalesTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#777;">لا توجد مبيعات مسجلة لهذه الدورة.</td></tr>`;
+                }
+            };
+
+
+            // --- معالجة الأحداث (Event Listeners) ---
+
+            // إضافة مزرعة جديدة من الشاشة الأولية
+            addFarmIntroForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = introFarmNameInput.value.trim();
+                if (name) {
+                    const newFarm = {
+                        id: Date.now(),
+                        name: name,
+                        cycles: [],
+                        expenses: [],
+                        mortality: [],
+                        sales: []
+                    };
+                    farms.push(newFarm);
+                    saveFarms();
+                    renderFarmsList();
+                    addFarmIntroForm.reset();
+                } else {
+                    alert('الرجاء إدخال اسم المزرعة.');
+                }
+            });
+
+            // اختيار مزرعة من القائمة (للانتقال لشاشة الإدارة)
+            farmsListDiv.addEventListener('click', (e) => {
+                const farmCard = e.target.closest('.farm-card');
+                if (farmCard) {
+                    currentFarmId = parseInt(farmCard.dataset.id);
+                    initialScreen.classList.add('hidden');
+                    managementScreen.classList.remove('hidden');
+                    // عرض قسم الدورات افتراضياً عند الدخول
+                    switchContentSection('addCycleSection');
+                    renderCurrentFarmData();
+                }
+            });
+
+            // العودة لقائمة المزارع من شاشة الإدارة
+            backToFarmsBtn.addEventListener('click', () => {
+                managementScreen.classList.add('hidden');
+                initialScreen.classList.remove('hidden');
+                currentFarmId = null;
+                renderFarmsList();
+            });
+
+            // مسح كل البيانات (زر جديد)
+            clearAllDataBtn.addEventListener('click', () => {
+                if (confirm('هل أنت متأكد من مسح جميع بيانات المزارع والدورات والمصروفات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
+                    localStorage.removeItem('poultryFarms');
+                    farms = [];
+                    currentFarmId = null;
+                    renderFarmsList();
+                    // العودة للشاشة الأولية بعد المسح
+                    managementScreen.classList.add('hidden');
+                    initialScreen.classList.remove('hidden');
+                    alert('تم مسح جميع البيانات بنجاح.');
+                }
+            });
+
+            // النقر على أزرار السايد بار
+            sidebarButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (button.id === 'addCycleBtn') switchContentSection('addCycleSection');
+                    else if (button.id === 'expensesBtn') switchContentSection('expensesSection');
+                    else if (button.id === 'mortalityBtn') switchContentSection('mortalitySection');
+                    else if (button.id === 'salesBtn') switchContentSection('salesSection');
+                    else if (button.id === 'cycleHistoryBtn') switchContentSection('cycleHistorySection');
+                });
+            });
+
+            // إضافة دورة جديدة
+            addCycleForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const farm = farms.find(f => f.id === currentFarmId);
+                if (!farm) return;
+
+                const newCycle = {
+                    id: Date.now(),
+                    startDate: cycleStartDateInput.value,
+                    chicksCount: parseInt(cycleChicksCountInput.value),
+                    chickPrice: parseFloat(cycleChickPriceInput.value),
+                    supplier: cycleSupplierInput.value.trim()
+                };
+
+                if (newCycle.startDate && !isNaN(newCycle.chicksCount) && newCycle.chicksCount > 0 && !isNaN(newCycle.chickPrice) && newCycle.chickPrice >= 0 && newCycle.supplier) {
+                    farm.cycles.push(newCycle);
+                    saveFarms();
+                    renderCurrentFarmData();
+                    addCycleForm.reset();
+                } else {
+                    alert('الرجاء ملء جميع حقول الدورة بشكل صحيح.');
+                }
+            });
+
+            // إضافة مصروف جديد
+            addExpenseForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const farm = farms.find(f => f.id === currentFarmId);
+                if (!farm) return;
+
+                const newExpense = {
+                    id: Date.now(),
+                    cycleId: parseInt(expenseCycleIdSelect.value),
+                    date: expenseDateInput.value,
+                    description: expenseDescriptionInput.value.trim(),
+                    amount: parseFloat(expenseAmountInput.value)
+                };
+
+                if (newExpense.cycleId && newExpense.date && newExpense.description && !isNaN(newExpense.amount) && newExpense.amount >= 0) {
+                    farm.expenses.push(newExpense);
+                    saveFarms();
+                    renderCurrentFarmData();
+                    addExpenseForm.reset();
+                } else {
+                    alert('الرجاء ملء جميع حقول المصروفات بشكل صحيح.');
+                }
+            });
+
+            // تسجيل النافق
+            addMortalityForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const farm = farms.find(f => f.id === currentFarmId);
+                if (!farm) return;
+
+                const newMortality = {
+                    id: Date.now(),
+                    cycleId: parseInt(mortalityCycleIdSelect.value),
+                    date: mortalityDateInput.value,
+                    count: parseInt(mortalityCountInput.value)
+                };
+
+                if (newMortality.cycleId && newMortality.date && !isNaN(newMortality.count) && newMortality.count >= 0) {
+                    farm.mortality.push(newMortality);
+                    saveFarms();
+                    renderCurrentFarmData();
+                    addMortalityForm.reset();
+                } else {
+                    alert('الرجاء ملء جميع حقول النافق بشكل صحيح.');
+                }
+            });
+
+            // تسجيل عملية بيع
+            addSaleForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const farm = farms.find(f => f.id === currentFarmId);
+                if (!farm) return;
+
+                const newSale = {
+                    id: Date.now(),
+                    cycleId: parseInt(saleCycleIdSelect.value),
+                    date: saleDateInput.value,
+                    quantity: parseFloat(saleQuantityInput.value),
+                    pricePerTon: parseFloat(salePricePerTonInput.value)
+                };
+
+                if (newSale.cycleId && newSale.date && !isNaN(newSale.quantity) && newSale.quantity > 0 && !isNaN(newSale.pricePerTon) && newSale.pricePerTon >= 0) {
+                    farm.sales.push(newSale);
+                    saveFarms();
+                    renderCurrentFarmData();
+                    addSaleForm.reset();
+                } else {
+                    alert('الرجاء ملء جميع حقول البيع بشكل صحيح.');
+                }
+            });
+
+            // عند اختيار دورة في سجل الدورات
+            selectCycleToView.addEventListener('change', (e) => {
+                const selectedCycleId = parseInt(e.target.value);
+                if (selectedCycleId) {
+                    displayCycleDetails(selectedCycleId);
+                } else {
+                    cycleDetailsDisplay.classList.add('hidden');
+                    noCycleSelectedPrompt.classList.remove('hidden');
+                }
+            });
+
+            // معالجة حذف العناصر داخل الجداول (دورة، مصروف، نافق، بيع)
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('btn-danger') && e.target.classList.contains('btn-sm')) {
+                    const type = e.target.dataset.type;
+                    const itemId = parseInt(e.target.dataset.id);
+                    const farm = farms.find(f => f.id === currentFarmId);
+
+                    if (!farm || !confirm('هل أنت متأكد من حذف هذا العنصر؟')) return;
+
+                    if (type === 'cycle') {
+                        if (!confirm('تحذير: حذف هذه الدورة سيؤدي إلى حذف كل المصروفات والنافق والمبيعات المرتبطة بها. هل أنت متأكد؟')) {
+                            return;
+                        }
+                        farm.cycles = farm.cycles.filter(item => item.id !== itemId);
+                        farm.expenses = farm.expenses.filter(exp => exp.cycleId !== itemId);
+                        farm.mortality = farm.mortality.filter(mort => mort.cycleId !== itemId);
+                        farm.sales = farm.sales.filter(sale => sale.cycleId !== itemId);
+
+                    } else if (type === 'expense') {
+                        farm.expenses = farm.expenses.filter(item => item.id !== itemId);
+                    } else if (type === 'mortality') {
+                        farm.mortality = farm.mortality.filter(item => item.id !== itemId);
+                    } else if (type === 'sale') {
+                        farm.sales = farm.sales.filter(item => item.id !== itemId);
+                    }
+                    saveFarms();
+                    renderCurrentFarmData(); // إعادة عرض البيانات المحدثة
+                    // لو كنا في قسم سجل الدورات، ممكن نحتاج نعيد تحميله أو ننبه المستخدم
+                    if (!cycleHistorySection.classList.contains('hidden')) {
+                         switchContentSection('cycleHistorySection');
+                    }
+                }
+            });
+
+            // --- بدء التطبيق ---
+            loadFarms();
+        });
+    </script>
+</body>
+</html>
