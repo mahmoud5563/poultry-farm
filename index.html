@@ -508,7 +508,7 @@
             <form id="addFarmIntroForm">
                 <div class="form-group">
                     <label for="introFarmName">اسم المزرعة:</label>
-                    <input type="text" id="introFarmName" required placeholder="مثال: مزرعة الأمل">
+                    <input type="text" id="introFarmName" required >
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn">أضف المزرعة</button>
@@ -539,6 +539,8 @@
                 <li><button id="expensesBtn" class="sidebar-btn">المصروفات</button></li>
                 <li><button id="mortalityBtn" class="sidebar-btn">النافق</button></li>
                 <li><button id="salesBtn" class="sidebar-btn">البيع</button></li>
+                <li><button id="vaccinationsBtn" class="sidebar-btn">التحصينات</button></li>
+                <li><button id="medicationsBtn" class="sidebar-btn">الأدوية</button></li>
                 <li><button id="cycleHistoryBtn" class="sidebar-btn">سجل الدورات</button></li>
             </ul>
             <button id="backToFarmsBtn" class="back-btn">العودة للمزارع</button>
@@ -565,7 +567,7 @@
                     </div>
                     <div class="form-group">
                         <label for="cycleSupplier">المورد:</label>
-                        <input type="text" id="cycleSupplier" required placeholder="مثال: شركة النور">
+                        <input type="text" id="cycleSupplier" required >
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn">حفظ الدورة</button>
@@ -602,7 +604,7 @@
                     </div>
                     <div class="form-group">
                         <label for="expenseDescription">الوصف:</label>
-                        <input type="text" id="expenseDescription" required placeholder="مثال: شراء أعلاف">
+                        <input type="text" id="expenseDescription" required >
                     </div>
                     <div class="form-group">
                         <label for="expenseAmount">المبلغ:</label>
@@ -706,6 +708,89 @@
                 </table>
             </div>
 
+            <div id="vaccinationsSection" class="content-section hidden">
+                <h4>إضافة تحصين جديد</h4>
+                <form id="addVaccinationForm">
+                    <div class="form-group">
+                        <label for="vaccinationCycleId">الدورة المرتبطة:</label>
+                        <select id="vaccinationCycleId" required>
+                            <option value="">اختر دورة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vaccinationDate">التاريخ:</label>
+                        <input type="date" id="vaccinationDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vaccinationName">اسم التحصين:</label>
+                        <input type="text" id="vaccinationName" required >
+                    </div>
+                    <div class="form-group">
+                        <label for="vaccinationAge">عمر الفراخ (يوم):</label>
+                        <input type="number" id="vaccinationAge" required min="0">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">إضافة التحصين</button>
+                    </div>
+                </form>
+                <h4>سجل التحصينات</h4>
+                <table class="data-table" id="vaccinationsTable">
+                    <thead>
+                        <tr>
+                            <th>الدورة</th>
+                            <th>التاريخ</th>
+                            <th>اسم التحصين</th>
+                            <th>عمر الفراخ (يوم)</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div id="medicationsSection" class="content-section hidden">
+                <h4>إضافة دواء جديد</h4>
+                <form id="addMedicationForm">
+                    <div class="form-group">
+                        <label for="medicationCycleId">الدورة المرتبطة:</label>
+                        <select id="medicationCycleId" required>
+                            <option value="">اختر دورة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="medicationDate">التاريخ:</label>
+                        <input type="date" id="medicationDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medicationName">اسم الدواء:</label>
+                        <input type="text" id="medicationName" required >
+                    </div>
+                    <div class="form-group">
+                        <label for="medicationAge">عمر الفراخ (يوم):</label>
+                        <input type="number" id="medicationAge" required min="0">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">إضافة الدواء</button>
+                    </div>
+                </form>
+                <h4>سجل الأدوية</h4>
+                <table class="data-table" id="medicationsTable">
+                    <thead>
+                        <tr>
+                            <th>الدورة</th>
+                            <th>التاريخ</th>
+                            <th>اسم الدواء</th>
+                            <th>عمر الفراخ (يوم)</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+
             <div id="cycleHistorySection" class="content-section hidden">
                 <h4>سجل الدورات</h4>
                 <div class="form-group">
@@ -768,6 +853,33 @@
                         <tbody>
                             </tbody>
                     </table>
+
+                    <h5>التحصينات الخاصة بهذه الدورة:</h5>
+                    <table class="data-table" id="cycleDetailsVaccinationsTable">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>اسم التحصين</th>
+                                <th>عمر الفراخ (يوم)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+
+                    <h5>الأدوية الخاصة بهذه الدورة:</h5>
+                    <table class="data-table" id="cycleDetailsMedicationsTable">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>اسم الدواء</th>
+                                <th>عمر الفراخ (يوم)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+
                 </div>
                 <p id="noCycleSelectedPrompt" class="cycle-select-prompt">الرجاء اختيار دورة من القائمة لعرض تفاصيلها.</p>
             </div>
@@ -794,6 +906,7 @@
             const mobileBackToFarms = document.getElementById('mobileBackToFarms');
 
             const sidebar = document.querySelector('.sidebar');
+            // تحديث قائمة الأزرار لتشمل الأدوية
             const sidebarButtons = document.querySelectorAll('.sidebar-btn');
             const contentTitle = document.getElementById('contentTitle');
 
@@ -802,6 +915,8 @@
             const expensesSection = document.getElementById('expensesSection');
             const mortalitySection = document.getElementById('mortalitySection');
             const salesSection = document.getElementById('salesSection');
+            const vaccinationsSection = document.getElementById('vaccinationsSection');
+            const medicationsSection = document.getElementById('medicationsSection'); // قسم الأدوية الجديد
             const cycleHistorySection = document.getElementById('cycleHistorySection');
 
             // فورمة إضافة دورة
@@ -831,9 +946,26 @@
             const addSaleForm = document.getElementById('addSaleForm');
             const saleCycleIdSelect = document.getElementById('saleCycleId');
             const saleDateInput = document.getElementById('saleDate');
-            const saleQuantityInput = document.getElementById('saleQuantity');
+            const saleQuantityInput = document.getElementById('saleQuantity'); // تم التصحيح هنا
             const salePricePerTonInput = document.getElementById('salePricePerTon');
             const salesTableBody = document.querySelector('#salesTable tbody');
+
+            // عناصر قسم التحصينات
+            const addVaccinationForm = document.getElementById('addVaccinationForm');
+            const vaccinationCycleIdSelect = document.getElementById('vaccinationCycleId');
+            const vaccinationDateInput = document.getElementById('vaccinationDate');
+            const vaccinationNameInput = document.getElementById('vaccinationName');
+            const vaccinationAgeInput = document.getElementById('vaccinationAge');
+            const vaccinationsTableBody = document.querySelector('#vaccinationsTable tbody');
+
+            // عناصر قسم الأدوية (الجديد)
+            const addMedicationForm = document.getElementById('addMedicationForm');
+            const medicationCycleIdSelect = document.getElementById('medicationCycleId');
+            const medicationDateInput = document.getElementById('medicationDate');
+            const medicationNameInput = document.getElementById('medicationName');
+            const medicationAgeInput = document.getElementById('medicationAge');
+            const medicationsTableBody = document.querySelector('#medicationsTable tbody');
+
 
             // عناصر قسم سجل الدورات
             const selectCycleToView = document.getElementById('selectCycleToView');
@@ -852,6 +984,8 @@
             const cycleDetailsExpensesTableBody = document.querySelector('#cycleDetailsExpensesTable tbody');
             const cycleDetailsMortalityTableBody = document.querySelector('#cycleDetailsMortalityTable tbody');
             const cycleDetailsSalesTableBody = document.querySelector('#cycleDetailsSalesTable tbody');
+            const cycleDetailsVaccinationsTableBody = document.querySelector('#cycleDetailsVaccinationsTable tbody');
+            const cycleDetailsMedicationsTableBody = document.querySelector('#cycleDetailsMedicationsTable tbody'); // جدول الأدوية في التفاصيل
 
 
             // --- المتغيرات الداخلية لإدارة الحالة ---
@@ -896,10 +1030,18 @@
 
                 currentFarmNameSidebar.textContent = `مزرعة: ${farm.name}`;
 
+                // تحديث جميع قوائم الدورات المنسدلة
                 const populateCycleSelects = () => {
-                    const cycleSelects = [expenseCycleIdSelect, mortalityCycleIdSelect, saleCycleIdSelect, selectCycleToView];
+                    const cycleSelects = [
+                        expenseCycleIdSelect,
+                        mortalityCycleIdSelect,
+                        saleCycleIdSelect,
+                        vaccinationCycleIdSelect,
+                        medicationCycleIdSelect, // أضفنا هنا
+                        selectCycleToView
+                    ];
                     cycleSelects.forEach(selectElement => {
-                        const selectedValue = selectElement.value;
+                        const selectedValue = selectElement.value; // احتفظ بالقيمة المختارة
                         selectElement.innerHTML = '<option value="">اختر دورة</option>';
                         farm.cycles.forEach(cycle => {
                             const option = document.createElement('option');
@@ -907,6 +1049,7 @@
                             option.textContent = `دورة بتاريخ: ${cycle.startDate} (${cycle.supplier})`;
                             selectElement.appendChild(option);
                         });
+                        // أعد تعيين القيمة المختارة بعد تحديث الخيارات
                         selectElement.value = selectedValue;
                     });
                 };
@@ -980,6 +1123,41 @@
                 } else {
                     salesTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#777;">لا توجد مبيعات مسجلة بعد.</td></tr>`;
                 }
+
+                vaccinationsTableBody.innerHTML = '';
+                if (farm.vaccinations && farm.vaccinations.length > 0) {
+                    farm.vaccinations.forEach(vaccination => {
+                        const cycleName = farm.cycles.find(c => c.id === vaccination.cycleId)?.startDate || 'دورة غير معروفة';
+                        const row = vaccinationsTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${cycleName}</td>
+                            <td>${vaccination.date}</td>
+                            <td>${vaccination.name}</td>
+                            <td>${vaccination.age}</td>
+                            <td><button class="btn btn-danger btn-sm" data-type="vaccination" data-id="${vaccination.id}">حذف</button></td>
+                        `;
+                    });
+                } else {
+                    vaccinationsTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#777;">لا توجد تحصينات مسجلة بعد.</td></tr>`;
+                }
+
+                // تحديث جدول الأدوية (الجديد)
+                medicationsTableBody.innerHTML = '';
+                if (farm.medications && farm.medications.length > 0) {
+                    farm.medications.forEach(medication => {
+                        const cycleName = farm.cycles.find(c => c.id === medication.cycleId)?.startDate || 'دورة غير معروفة';
+                        const row = medicationsTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${cycleName}</td>
+                            <td>${medication.date}</td>
+                            <td>${medication.name}</td>
+                            <td>${medication.age}</td>
+                            <td><button class="btn btn-danger btn-sm" data-type="medication" data-id="${medication.id}">حذف</button></td>
+                        `;
+                    });
+                } else {
+                    medicationsTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#777;">لا توجد أدوية مسجلة بعد.</td></tr>`;
+                }
             };
 
             const switchContentSection = (sectionId) => {
@@ -988,6 +1166,8 @@
                 expensesSection.classList.add('hidden');
                 mortalitySection.classList.add('hidden');
                 salesSection.classList.add('hidden');
+                vaccinationsSection.classList.add('hidden');
+                medicationsSection.classList.add('hidden'); // إخفاء قسم الأدوية الجديد
                 cycleHistorySection.classList.add('hidden');
 
                 // إظهار القسم المطلوب
@@ -998,10 +1178,12 @@
                 else if (sectionId === 'expensesSection') contentTitle.textContent = 'المصروفات';
                 else if (sectionId === 'mortalitySection') contentTitle.textContent = 'النافق';
                 else if (sectionId === 'salesSection') contentTitle.textContent = 'البيع';
+                else if (sectionId === 'vaccinationsSection') contentTitle.textContent = 'التحصينات'; // عنوان قسم التحصينات (تم تعديله)
+                else if (sectionId === 'medicationsSection') contentTitle.textContent = 'الأدوية'; // عنوان قسم الأدوية الجديد
                 else if (sectionId === 'cycleHistorySection') contentTitle.textContent = 'سجل الدورات';
 
                 // تحديث زر السايد بار النشط
-                sidebarButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
                 const activeBtn = document.getElementById(sectionId.replace('Section', 'Btn'));
                 if (activeBtn) activeBtn.classList.add('active');
 
@@ -1025,9 +1207,11 @@
                         cycleDetailsDisplay.classList.add('hidden');
                     }
                 }
-                 if (['expensesSection', 'mortalitySection', 'salesSection', 'cycleHistorySection'].includes(sectionId)) {
+                // تحديث البيانات لكل الأقسام التي تعرض بيانات من localStorage
+                if (['expensesSection', 'mortalitySection', 'salesSection', 'vaccinationsSection', 'medicationsSection', 'cycleHistorySection'].includes(sectionId)) {
                     renderCurrentFarmData();
                 }
+
 
                 // إغلاق السايد بار بعد اختيار قسم في الموبايل
                 if (window.innerWidth <= 768) {
@@ -1063,6 +1247,8 @@
                 const cycleExpenses = farm.expenses.filter(exp => exp.cycleId === cycle.id);
                 const cycleMortality = farm.mortality.filter(mort => mort.cycleId === cycle.id);
                 const cycleSales = farm.sales.filter(sale => sale.cycleId === cycle.id);
+                const cycleVaccinations = farm.vaccinations.filter(vac => vac.cycleId === cycle.id);
+                const cycleMedications = farm.medications.filter(med => med.cycleId === cycle.id); // الأدوية الخاصة بالدورة
 
                 cycleMortality.forEach(item => totalMortality += item.count);
                 cycleExpenses.forEach(exp => totalExpenses += exp.amount);
@@ -1129,6 +1315,35 @@
                 } else {
                     cycleDetailsSalesTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#777;">لا توجد مبيعات مسجلة لهذه الدورة.</td></tr>`;
                 }
+
+                cycleDetailsVaccinationsTableBody.innerHTML = '';
+                if (cycleVaccinations.length > 0) {
+                    cycleVaccinations.forEach(vac => {
+                        const row = cycleDetailsVaccinationsTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${vac.date}</td>
+                            <td>${vac.name}</td>
+                            <td>${vac.age}</td>
+                        `;
+                    });
+                } else {
+                    cycleDetailsVaccinationsTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#777;">لا توجد تحصينات مسجلة لهذه الدورة.</td></tr>`;
+                }
+
+                // تحديث جدول الأدوية في تفاصيل الدورة (الجديد)
+                cycleDetailsMedicationsTableBody.innerHTML = '';
+                if (cycleMedications.length > 0) {
+                    cycleMedications.forEach(med => {
+                        const row = cycleDetailsMedicationsTableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${med.date}</td>
+                            <td>${med.name}</td>
+                            <td>${med.age}</td>
+                        `;
+                    });
+                } else {
+                    cycleDetailsMedicationsTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#777;">لا توجد أدوية مسجلة لهذه الدورة.</td></tr>`;
+                }
             };
 
 
@@ -1144,7 +1359,9 @@
                         cycles: [],
                         expenses: [],
                         mortality: [],
-                        sales: []
+                        sales: [],
+                        vaccinations: [], // مصفوفة للتحصينات
+                        medications: []   // مصفوفة جديدة للأدوية
                     };
                     farms.push(newFarm);
                     saveFarms();
@@ -1166,7 +1383,6 @@
                 }
             });
 
-            // العودة لقائمة المزارع من شاشة الإدارة (سواء الزرار الكبير للديسكتوب أو زرار الموبايل)
             backToFarmsBtn.addEventListener('click', () => {
                 managementScreen.classList.add('hidden');
                 initialScreen.classList.remove('hidden');
@@ -1181,7 +1397,6 @@
                 renderFarmsList();
             });
 
-            // مسح كل البيانات (مربوط بزرار السايد بار فقط الآن)
             const handleClearAllData = () => {
                 if (confirm('هل أنت متأكد من مسح جميع بيانات المزارع والدورات والمصروفات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
                     localStorage.removeItem('poultryFarms');
@@ -1195,28 +1410,27 @@
             };
             clearAllDataBtn.addEventListener('click', handleClearAllData);
 
-
-            // فتح/إغلاق السايد بار في الموبايل
             mobileMenuToggle.addEventListener('click', () => {
                 sidebar.classList.toggle('open');
-                managementScreen.classList.toggle('sidebar-open'); // إضافة كلاس لـ management-layout للتحكم في الأوفرلاي
+                managementScreen.classList.toggle('sidebar-open');
             });
 
-            // إغلاق السايد بار لو دوست بره لما يكون مفتوح في الموبايل (الطبقة الشفافة)
             document.addEventListener('click', (e) => {
-                // لو السايد بار مفتوح ودست على أي حاجة مش جواه ولا زرار المنيو
                 if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== mobileMenuToggle) {
                     sidebar.classList.remove('open');
-                    managementScreen.classList.remove('sidebar-open'); // إزالة الأوفرلاي
+                    managementScreen.classList.remove('sidebar-open');
                 }
             });
 
-            sidebarButtons.forEach(button => {
+            // تحديث هذه الدالة لتشمل زر التحصينات والأدوية
+            document.querySelectorAll('.sidebar-btn').forEach(button => {
                 button.addEventListener('click', () => {
                     if (button.id === 'addCycleBtn') switchContentSection('addCycleSection');
                     else if (button.id === 'expensesBtn') switchContentSection('expensesSection');
                     else if (button.id === 'mortalityBtn') switchContentSection('mortalitySection');
                     else if (button.id === 'salesBtn') switchContentSection('salesSection');
+                    else if (button.id === 'vaccinationsBtn') switchContentSection('vaccinationsSection');
+                    else if (button.id === 'medicationsBtn') switchContentSection('medicationsSection'); // ربط زر الأدوية بالقسم الجديد
                     else if (button.id === 'cycleHistoryBtn') switchContentSection('cycleHistorySection');
                 });
             });
@@ -1312,6 +1526,54 @@
                 }
             });
 
+            addVaccinationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const farm = farms.find(f => f.id === currentFarmId);
+                if (!farm) return;
+
+                const newVaccination = {
+                    id: Date.now(),
+                    cycleId: parseInt(vaccinationCycleIdSelect.value),
+                    date: vaccinationDateInput.value,
+                    name: vaccinationNameInput.value.trim(),
+                    age: parseInt(vaccinationAgeInput.value)
+                };
+
+                if (newVaccination.cycleId && newVaccination.date && newVaccination.name && !isNaN(newVaccination.age) && newVaccination.age >= 0) {
+                    farm.vaccinations.push(newVaccination);
+                    saveFarms();
+                    renderCurrentFarmData();
+                    addVaccinationForm.reset();
+                } else {
+                    alert('الرجاء ملء جميع حقول التحصين بشكل صحيح.');
+                }
+            });
+
+            // إضافة معالج لـ form الأدوية الجديد
+            addMedicationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const farm = farms.find(f => f.id === currentFarmId);
+                if (!farm) return;
+
+                const newMedication = {
+                    id: Date.now(),
+                    cycleId: parseInt(medicationCycleIdSelect.value),
+                    date: medicationDateInput.value,
+                    name: medicationNameInput.value.trim(),
+                    age: parseInt(medicationAgeInput.value)
+                };
+
+                if (newMedication.cycleId && newMedication.date && newMedication.name && !isNaN(newMedication.age) && newMedication.age >= 0) {
+                    farm.medications.push(newMedication); // إضافة الدواء للمزرعة
+                    saveFarms();
+                    renderCurrentFarmData();
+                    addMedicationForm.reset();
+                } else {
+                    alert('الرجاء ملء جميع حقول الدواء بشكل صحيح.');
+                }
+            });
+
+
             selectCycleToView.addEventListener('change', (e) => {
                 const selectedCycleId = parseInt(e.target.value);
                 if (selectedCycleId) {
@@ -1331,13 +1593,15 @@
                     if (!farm || !confirm('هل أنت متأكد من حذف هذا العنصر؟')) return;
 
                     if (type === 'cycle') {
-                        if (!confirm('تحذير: حذف هذه الدورة سيؤدي إلى حذف كل المصروفات والنافق والمبيعات المرتبطة بها. هل أنت متأكد؟')) {
+                        if (!confirm('تحذير: حذف هذه الدورة سيؤدي إلى حذف كل المصروفات والنافق والمبيعات والتحصينات والأدوية المرتبطة بها. هل أنت متأكد؟')) {
                             return;
                         }
                         farm.cycles = farm.cycles.filter(item => item.id !== itemId);
                         farm.expenses = farm.expenses.filter(exp => exp.cycleId !== itemId);
                         farm.mortality = farm.mortality.filter(mort => mort.cycleId !== itemId);
                         farm.sales = farm.sales.filter(sale => sale.cycleId !== itemId);
+                        farm.vaccinations = farm.vaccinations.filter(vac => vac.cycleId !== itemId);
+                        farm.medications = farm.medications.filter(med => med.cycleId !== itemId); // حذف الأدوية المرتبطة
 
                     } else if (type === 'expense') {
                         farm.expenses = farm.expenses.filter(item => item.id !== itemId);
@@ -1345,11 +1609,18 @@
                         farm.mortality = farm.mortality.filter(item => item.id !== itemId);
                     } else if (type === 'sale') {
                         farm.sales = farm.sales.filter(item => item.id !== itemId);
+                    } else if (type === 'vaccination') {
+                        farm.vaccinations = farm.vaccinations.filter(item => item.id !== itemId);
+                    } else if (type === 'medication') { // معالجة حذف الدواء
+                        farm.medications = farm.medications.filter(item => item.id !== itemId);
                     }
                     saveFarms();
                     renderCurrentFarmData();
-                    if (!cycleHistorySection.classList.contains('hidden')) {
-                         switchContentSection('cycleHistorySection');
+                    // تحديث عرض تفاصيل الدورة إذا كنت تعرضها حاليًا
+                    if (!cycleHistorySection.classList.contains('hidden') && selectCycleToView.value) {
+                         displayCycleDetails(parseInt(selectCycleToView.value));
+                    } else if (!cycleHistorySection.classList.contains('hidden')) {
+                         switchContentSection('cycleHistorySection'); // لإعادة تحميل السجل إذا لا يوجد دورة مختارة
                     }
                 }
             });
