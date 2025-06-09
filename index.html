@@ -67,17 +67,17 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #555;
-            text-align: right; /* Align labels to the right */
+            text-align: right;
         }
 
         .form-group input[type="text"],
         .form-group input[type="number"],
         .form-group input[type="date"],
-        .form-group select { /* Added select */
+        .form-group select {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ced4da;
-            border-radius: 8px; /* Softer corners */
+            border-radius: 8px;
             box-sizing: border-box;
             font-size: 1.05em;
             color: #495057;
@@ -87,9 +87,9 @@
 
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #007bff; /* Blue focus color */
+            border-color: #007bff;
             outline: none;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Subtle shadow on focus */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
             background-color: #fff;
         }
 
@@ -103,14 +103,14 @@
             color: white;
             padding: 12px 25px;
             border: none;
-            border-radius: 8px; /* Consistent border-radius */
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1.1em;
             font-weight: 600;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             display: inline-block;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2); /* Subtle shadow for buttons */
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
         }
 
         .btn:hover {
@@ -120,7 +120,7 @@
         }
 
         .btn-secondary {
-            background-color: #6c757d; /* Darker gray for secondary */
+            background-color: #6c757d;
             box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
         }
         .btn-secondary:hover {
@@ -129,7 +129,7 @@
         }
 
         .btn-danger {
-            background-color: #dc3545; /* Brighter red for danger */
+            background-color: #dc3545;
             box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
         }
         .btn-danger:hover {
@@ -150,7 +150,7 @@
             border: 1px solid #e0e0e0;
             border-left: 6px solid #3498db;
             padding: 25px;
-            border-radius: 10px; /* Slightly more rounded */
+            border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
             display: flex;
             flex-direction: column;
@@ -176,13 +176,14 @@
         .management-layout {
             display: flex;
             width: 100%;
-            height: calc(100vh - 40px);
+            min-height: calc(100vh - 40px);
             max-width: 1200px;
             margin: 20px auto;
             background-color: #ffffff;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
+            position: relative;
         }
 
         .sidebar {
@@ -194,6 +195,7 @@
             display: flex;
             flex-direction: column;
             border-radius: 12px 0 0 12px;
+            flex-shrink: 0;
         }
 
         .sidebar h2 {
@@ -254,9 +256,9 @@
             box-shadow: 0 6px 15px rgba(230, 126, 34, 0.3);
         }
 
-        /* New: Clear Data Button Style */
+        /* زر مسح البيانات في الوضع العادي - داخل السايد بار */
         .sidebar .clear-data-btn {
-            background-color: #f44336; /* Red for destructive action */
+            background-color: #f44336;
             color: white;
             padding: 12px 20px;
             border: none;
@@ -265,7 +267,7 @@
             font-size: 1.1em;
             font-weight: 600;
             transition: background-color 0.3s ease;
-            margin-top: 15px; /* Spacing from back button */
+            margin-top: 15px;
             width: 100%;
             box-shadow: 0 4px 10px rgba(244, 67, 54, 0.2);
         }
@@ -355,7 +357,7 @@
 
         /* Cycle Details Specific Styles */
         .cycle-details-summary {
-            background-color: #eaf6fd; /* Light blue background */
+            background-color: #eaf6fd;
             border: 1px solid #b3e0ff;
             border-radius: 8px;
             padding: 20px;
@@ -376,10 +378,10 @@
             border-top: 1px dashed #b3e0ff;
         }
         .profit-loss.profit {
-            color: #28a745; /* Green for profit */
+            color: #28a745;
         }
         .profit-loss.loss {
-            color: #dc3545; /* Red for loss */
+            color: #dc3545;
         }
 
         .cycle-select-prompt {
@@ -391,6 +393,106 @@
             border-radius: 8px;
             margin-top: 30px;
             background-color: #f0f0f0;
+        }
+
+        /* --- Responsive Design Additions --- */
+
+        /* زرار فتح القائمة (المنيوم) والعودة للمزارع في الموبايل */
+        .mobile-header-buttons {
+            display: none; /* مخفي افتراضياً */
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            z-index: 1000;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .mobile-menu-toggle,
+        .mobile-back-to-farms {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            white-space: nowrap;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .mobile-back-to-farms {
+            background-color: #e67e22;
+            box-shadow: 0 2px 5px rgba(230, 126, 34, 0.3);
+        }
+
+        .mobile-menu-toggle:hover,
+        .mobile-back-to-farms:hover {
+            transform: translateY(-1px);
+        }
+
+
+        @media (max-width: 768px) {
+            .management-layout {
+                flex-direction: column;
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                right: -250px; /* مخفي تماماً خارج الشاشة */
+                width: 250px;
+                height: 100%;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+                transition: right 0.3s ease-in-out;
+                z-index: 1000;
+                border-radius: 0;
+                padding-top: 80px; /* مسافة من فوق لزرار المنيو */
+            }
+
+            .sidebar.open {
+                right: 0; /* يظهر لما يكون مفتوح */
+            }
+
+            .main-content {
+                padding: 20px;
+                margin-top: 70px; /* مسافة من فوق عشان أزرار الهيدر */
+                width: 100%;
+            }
+
+            .sidebar h2 {
+                display: none; /* إخفاء اسم المزرعة داخل السايد بار في الموبايل */
+            }
+
+            /* الأزرار دي هتفضل ظاهرة في السايد بار في الموبايل لما يظهر */
+            .sidebar .back-btn,
+            .sidebar .clear-data-btn {
+                display: block; /* تأكد أنها ظاهرة لما السايد بار مفتوح */
+            }
+
+            .mobile-header-buttons {
+                display: flex; /* إظهار أزرار الهيدر في الموبايل */
+            }
+
+            /* Overlay effect when sidebar is open */
+            .management-layout.sidebar-open::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6); /* طبقة سوداء شفافة */
+                z-index: 999; /* تحت السايد بار مباشرة */
+            }
         }
     </style>
 </head>
@@ -422,6 +524,11 @@
     </div>
 
     <div id="managementScreen" class="management-layout hidden">
+        <div class="mobile-header-buttons">
+            <button id="mobileMenuToggle" class="mobile-menu-toggle">☰ القائمة</button>
+            <button id="mobileBackToFarms" class="mobile-back-to-farms">العودة للمزارع</button>
+        </div>
+
         <div class="sidebar">
             <h2 id="currentFarmNameSidebar"></h2>
             <ul>
@@ -432,7 +539,8 @@
                 <li><button id="cycleHistoryBtn" class="sidebar-btn">سجل الدورات</button></li>
             </ul>
             <button id="backToFarmsBtn" class="back-btn">العودة للمزارع</button>
-            <button id="clearAllDataBtn" class="clear-data-btn">مسح كل البيانات</button> </div>
+            <button id="clearAllDataBtn" class="clear-data-btn">مسح كل البيانات</button>
+        </div>
 
         <div class="main-content">
             <h3 id="contentTitle">إضافة دورة جديدة</h3>
@@ -675,9 +783,14 @@
             const emptyState = document.getElementById('emptyState');
 
             const currentFarmNameSidebar = document.getElementById('currentFarmNameSidebar');
-            const backToFarmsBtn = document.getElementById('backToFarmsBtn');
-            const clearAllDataBtn = document.getElementById('clearAllDataBtn'); // الزر الجديد
+            const backToFarmsBtn = document.getElementById('backToFarmsBtn'); // زرار الرجوع للديسكتوب
+            const clearAllDataBtn = document.getElementById('clearAllDataBtn'); // زرار مسح البيانات في السايد بار
 
+            // أزرار الموبايل الجديدة (فقط زرار المنيو والعودة للمزارع)
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileBackToFarms = document.getElementById('mobileBackToFarms');
+
+            const sidebar = document.querySelector('.sidebar');
             const sidebarButtons = document.querySelectorAll('.sidebar-btn');
             const contentTitle = document.getElementById('contentTitle');
 
@@ -780,11 +893,9 @@
 
                 currentFarmNameSidebar.textContent = `مزرعة: ${farm.name}`;
 
-                // تحديث قائمة الدورات في الـ Selects (للمصروفات والنافق والبيع وسجل الدورات)
                 const populateCycleSelects = () => {
                     const cycleSelects = [expenseCycleIdSelect, mortalityCycleIdSelect, saleCycleIdSelect, selectCycleToView];
                     cycleSelects.forEach(selectElement => {
-                        // حفظ القيمة المختارة قبل تفريغ القائمة
                         const selectedValue = selectElement.value;
                         selectElement.innerHTML = '<option value="">اختر دورة</option>';
                         farm.cycles.forEach(cycle => {
@@ -793,14 +904,12 @@
                             option.textContent = `دورة بتاريخ: ${cycle.startDate} (${cycle.supplier})`;
                             selectElement.appendChild(option);
                         });
-                        // استعادة القيمة المختارة بعد إعادة الملء
                         selectElement.value = selectedValue;
                     });
                 };
                 populateCycleSelects();
 
 
-                // عرض بيانات الدورات في جدول "إضافة دورة"
                 cyclesTableBody.innerHTML = '';
                 if (farm.cycles && farm.cycles.length > 0) {
                     farm.cycles.forEach(cycle => {
@@ -817,7 +926,6 @@
                     cyclesTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#777;">لا توجد دورات مسجلة بعد.</td></tr>`;
                 }
 
-                // عرض بيانات المصروفات
                 expensesTableBody.innerHTML = '';
                 if (farm.expenses && farm.expenses.length > 0) {
                     farm.expenses.forEach(expense => {
@@ -835,7 +943,6 @@
                     expensesTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#777;">لا توجد مصروفات مسجلة بعد.</td></tr>`;
                 }
 
-                // عرض بيانات النافق
                 mortalityTableBody.innerHTML = '';
                 if (farm.mortality && farm.mortality.length > 0) {
                     farm.mortality.forEach(item => {
@@ -852,7 +959,6 @@
                     mortalityTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#777;">لا توجد حالات نافق مسجلة بعد.</td></tr>`;
                 }
 
-                // عرض بيانات البيع
                 salesTableBody.innerHTML = '';
                 if (farm.sales && farm.sales.length > 0) {
                     farm.sales.forEach(sale => {
@@ -916,13 +1022,17 @@
                         cycleDetailsDisplay.classList.add('hidden');
                     }
                 }
-                 // عند التحويل لأي قسم فيه قوائم منسدلة (selects)
-                if (['expensesSection', 'mortalitySection', 'salesSection', 'cycleHistorySection'].includes(sectionId)) {
-                    renderCurrentFarmData(); // لإعادة تحديث قوائم الدورات
+                 if (['expensesSection', 'mortalitySection', 'salesSection', 'cycleHistorySection'].includes(sectionId)) {
+                    renderCurrentFarmData();
+                }
+
+                // إغلاق السايد بار بعد اختيار قسم في الموبايل
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    managementScreen.classList.remove('sidebar-open'); // إزالة الأوفرلاي
                 }
             };
 
-            // عرض تفاصيل دورة معينة في سجل الدورات
             const displayCycleDetails = (cycleId) => {
                 const farm = farms.find(f => f.id === currentFarmId);
                 const cycle = farm.cycles.find(c => c.id === cycleId);
@@ -936,20 +1046,17 @@
                 noCycleSelectedPrompt.classList.add('hidden');
                 cycleDetailsDisplay.classList.remove('hidden');
 
-                // تحديث الملخص
                 displayedCycleName.textContent = cycle.startDate;
                 detailStartDate.textContent = cycle.startDate;
                 detailChicksCount.textContent = cycle.chicksCount;
                 detailChickPrice.textContent = cycle.chickPrice.toFixed(2);
                 detailSupplier.textContent = cycle.supplier;
 
-                // حساب الإجماليات للدورة المختارة
                 let totalMortality = 0;
                 let totalExpenses = 0;
                 let totalSales = 0;
                 let lastSaleDate = 'لا يوجد';
 
-                // فلترة المصروفات والنافق والبيع للدورة الحالية
                 const cycleExpenses = farm.expenses.filter(exp => exp.cycleId === cycle.id);
                 const cycleMortality = farm.mortality.filter(mort => mort.cycleId === cycle.id);
                 const cycleSales = farm.sales.filter(sale => sale.cycleId === cycle.id);
@@ -958,8 +1065,7 @@
                 cycleExpenses.forEach(exp => totalExpenses += exp.amount);
                 cycleSales.forEach(sale => {
                     totalSales += (sale.quantity * sale.pricePerTon);
-                    // تحديث تاريخ آخر بيع
-                    if (lastSaleDate === 'لا يوجد' || new Date(sale.date) > new Date(lastSaleDate)) { // مقارنة التواريخ كـ Date objects
+                    if (lastSaleDate === 'لا يوجد' || new Date(sale.date) > new Date(lastSaleDate)) {
                         lastSaleDate = sale.date;
                     }
                 });
@@ -969,7 +1075,6 @@
                 detailTotalSales.textContent = totalSales.toFixed(2);
                 detailEndDate.textContent = lastSaleDate;
 
-                // حساب صافي الربح/الخسارة
                 const totalChickCost = cycle.chicksCount * cycle.chickPrice;
                 const netProfitLoss = totalSales - totalExpenses - totalChickCost;
                 detailProfitLoss.textContent = `صافي الربح/الخسارة: ${netProfitLoss.toFixed(2)} جنيه`;
@@ -980,7 +1085,6 @@
                     detailProfitLoss.classList.add('loss');
                 }
 
-                // عرض المصروفات الخاصة بالدورة
                 cycleDetailsExpensesTableBody.innerHTML = '';
                 if (cycleExpenses.length > 0) {
                     cycleExpenses.forEach(exp => {
@@ -995,7 +1099,6 @@
                     cycleDetailsExpensesTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#777;">لا توجد مصروفات لهذه الدورة.</td></tr>`;
                 }
 
-                // عرض النافق الخاص بالدورة
                 cycleDetailsMortalityTableBody.innerHTML = '';
                 if (cycleMortality.length > 0) {
                     cycleMortality.forEach(mort => {
@@ -1009,7 +1112,6 @@
                     cycleDetailsMortalityTableBody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:#777;">لا يوجد نافق مسجل لهذه الدورة.</td></tr>`;
                 }
 
-                // عرض المبيعات الخاصة بالدورة
                 cycleDetailsSalesTableBody.innerHTML = '';
                 if (cycleSales.length > 0) {
                     cycleSales.forEach(sale => {
@@ -1029,7 +1131,6 @@
 
             // --- معالجة الأحداث (Event Listeners) ---
 
-            // إضافة مزرعة جديدة من الشاشة الأولية
             addFarmIntroForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const name = introFarmNameInput.value.trim();
@@ -1051,20 +1152,18 @@
                 }
             });
 
-            // اختيار مزرعة من القائمة (للانتقال لشاشة الإدارة)
             farmsListDiv.addEventListener('click', (e) => {
                 const farmCard = e.target.closest('.farm-card');
                 if (farmCard) {
                     currentFarmId = parseInt(farmCard.dataset.id);
                     initialScreen.classList.add('hidden');
                     managementScreen.classList.remove('hidden');
-                    // عرض قسم الدورات افتراضياً عند الدخول
                     switchContentSection('addCycleSection');
                     renderCurrentFarmData();
                 }
             });
 
-            // العودة لقائمة المزارع من شاشة الإدارة
+            // العودة لقائمة المزارع من شاشة الإدارة (سواء الزرار الكبير للديسكتوب أو زرار الموبايل)
             backToFarmsBtn.addEventListener('click', () => {
                 managementScreen.classList.add('hidden');
                 initialScreen.classList.remove('hidden');
@@ -1072,21 +1171,43 @@
                 renderFarmsList();
             });
 
-            // مسح كل البيانات (زر جديد)
-            clearAllDataBtn.addEventListener('click', () => {
+            mobileBackToFarms.addEventListener('click', () => {
+                managementScreen.classList.add('hidden');
+                initialScreen.classList.remove('hidden');
+                currentFarmId = null;
+                renderFarmsList();
+            });
+
+            // مسح كل البيانات (مربوط بزرار السايد بار فقط الآن)
+            const handleClearAllData = () => {
                 if (confirm('هل أنت متأكد من مسح جميع بيانات المزارع والدورات والمصروفات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
                     localStorage.removeItem('poultryFarms');
                     farms = [];
                     currentFarmId = null;
                     renderFarmsList();
-                    // العودة للشاشة الأولية بعد المسح
                     managementScreen.classList.add('hidden');
                     initialScreen.classList.remove('hidden');
                     alert('تم مسح جميع البيانات بنجاح.');
                 }
+            };
+            clearAllDataBtn.addEventListener('click', handleClearAllData);
+
+
+            // فتح/إغلاق السايد بار في الموبايل
+            mobileMenuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                managementScreen.classList.toggle('sidebar-open'); // إضافة كلاس لـ management-layout للتحكم في الأوفرلاي
             });
 
-            // النقر على أزرار السايد بار
+            // إغلاق السايد بار لو دوست بره لما يكون مفتوح في الموبايل (الطبقة الشفافة)
+            document.addEventListener('click', (e) => {
+                // لو السايد بار مفتوح ودست على أي حاجة مش جواه ولا زرار المنيو
+                if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== mobileMenuToggle) {
+                    sidebar.classList.remove('open');
+                    managementScreen.classList.remove('sidebar-open'); // إزالة الأوفرلاي
+                }
+            });
+
             sidebarButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     if (button.id === 'addCycleBtn') switchContentSection('addCycleSection');
@@ -1097,7 +1218,6 @@
                 });
             });
 
-            // إضافة دورة جديدة
             addCycleForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const farm = farms.find(f => f.id === currentFarmId);
@@ -1121,7 +1241,6 @@
                 }
             });
 
-            // إضافة مصروف جديد
             addExpenseForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const farm = farms.find(f => f.id === currentFarmId);
@@ -1145,7 +1264,6 @@
                 }
             });
 
-            // تسجيل النافق
             addMortalityForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const farm = farms.find(f => f.id === currentFarmId);
@@ -1168,7 +1286,6 @@
                 }
             });
 
-            // تسجيل عملية بيع
             addSaleForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const farm = farms.find(f => f.id === currentFarmId);
@@ -1192,7 +1309,6 @@
                 }
             });
 
-            // عند اختيار دورة في سجل الدورات
             selectCycleToView.addEventListener('change', (e) => {
                 const selectedCycleId = parseInt(e.target.value);
                 if (selectedCycleId) {
@@ -1203,7 +1319,6 @@
                 }
             });
 
-            // معالجة حذف العناصر داخل الجداول (دورة، مصروف، نافق، بيع)
             document.addEventListener('click', (e) => {
                 if (e.target.classList.contains('btn-danger') && e.target.classList.contains('btn-sm')) {
                     const type = e.target.dataset.type;
@@ -1229,8 +1344,7 @@
                         farm.sales = farm.sales.filter(item => item.id !== itemId);
                     }
                     saveFarms();
-                    renderCurrentFarmData(); // إعادة عرض البيانات المحدثة
-                    // لو كنا في قسم سجل الدورات، ممكن نحتاج نعيد تحميله أو ننبه المستخدم
+                    renderCurrentFarmData();
                     if (!cycleHistorySection.classList.contains('hidden')) {
                          switchContentSection('cycleHistorySection');
                     }
